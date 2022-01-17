@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_main">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="144dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/slide"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="45dp"
+                android:scaleType="fitCenter"
+                android:elevation="13dp"
+                android:layout_marginTop="5dp"
+            />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="24dp"
+                android:elevation="12dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="12dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/purple_500">
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/card"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="12dp"
+                        app:cardCornerRadius="24dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="#FFFFFF">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignStart="@+id/btn"
+                                android:layout_alignTop="@+id/btn"
+                                android:layout_alignEnd="@+id/btn"
+                                android:layout_alignBottom="@+id/btn"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/img_back" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                android:layout_width="130dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:text="$ 60.00"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                app:cornerRadius="@dimen/corner" />
+
+                        </RelativeLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

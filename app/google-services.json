@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "340487521044",
+    "project_id": "playgrounds-app-20a49",
+    "storage_bucket": "playgrounds-app-20a49.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340487521044:android:d516223f94c3983e4d7801",
+        "android_client_info": {
+          "package_name": "com.ella.playgrounds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340487521044-j400ab76kacipj9lqsft0mtlrhc85vu3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvBC5OlKbgd6CQ2xeTVr2xG0gcV1aZUfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340487521044-j400ab76kacipj9lqsft0mtlrhc85vu3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
