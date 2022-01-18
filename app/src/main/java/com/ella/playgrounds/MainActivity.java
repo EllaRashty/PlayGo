@@ -2,7 +2,6 @@ package com.ella.playgrounds;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -15,38 +14,34 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.CornerFamily;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
-import android.view.View;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.ella.playgrounds.databinding.ActivityMainBinding;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import java.util.List;
 
+interface CallBack_UploadParks {
+    void  UploadParks(List<Park> parksList);
+}
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private MapFragment fragment_map;
+    private ParksData parksData;
+
     int LOCATION_REQUEST_CODE = 1001;
 
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -65,11 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        Fragment fragment =new MapFragment();
+        fragment_map =new MapFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_layout,fragment)
+                .replace(R.id.frame_layout, fragment_map)
                 .commit();
+        readParksAndShowOnMap();
 
     }
 
@@ -78,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getLastLocation();
+            readParksAndShowOnMap();
         } else {
             askLocationPermission();
         }
@@ -170,5 +167,21 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // upload parks to map callback
+    private CallBack_UploadParks callBack_uploadParks = new CallBack_UploadParks() {
+        @Override
+        public void UploadParks(List<Park> parksList) {
+            for (Park park : parksList) {
+                fragment_map.addParkMarkers(park.getLat(), park.getLng(), park.getPid());
+
+            }
+        }
+    };
+
+    private void readParksAndShowOnMap() {
+        parksData = new ParksData(this);
+        parksData.getParks();
+        parksData.setCallBack_UploadParks(callBack_uploadParks);
+    }
 
 }

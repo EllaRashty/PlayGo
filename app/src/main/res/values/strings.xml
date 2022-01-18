@@ -12,4 +12,11 @@
     <string name="title_activity_maps">MapsActivity</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="park_1_address" translatable="false">Almagor Street 4,Tel Aviv-Yafo</string>
+    <string name="park_1_name" translatable="false">Almagor Playground</string>
+
+    <string name="park_2_address" translatable="false">Bnei Ephraim ,Tel Aviv-Yafo</string>
+    <string name="park_2_name" translatable="false">Bnei Ephraim Playground</string>
 </resources>
