@@ -11,9 +11,13 @@
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/imk_back.xml" value="0.15989583333333332" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_login.xml" value="0.15208333333333332" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_login_register.xml" value="0.12239583333333333" />
-        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_main.xml" value="0.184375" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_main.xml" value="0.10666666666666667" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_main2.xml" value="0.18206521739130435" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_maps.xml" value="0.13854166666666667" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/content_login.xml" value="0.16197916666666667" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/content_main.xml" value="0.184375" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/content_main2.xml" value="0.18206521739130435" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/fragment_map.xml" value="0.18206521739130435" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/menu/menu_main.xml" value="0.12239583333333333" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.15989583333333332" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
