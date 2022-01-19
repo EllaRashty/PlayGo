@@ -25,6 +25,11 @@ import androidx.core.content.ContextCompat;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,15 +37,23 @@ import android.widget.Toast;
 
 import java.util.List;
 
-interface CallBack_UploadParks {
-    void UploadParks(List<Park> parksList);
-}
+//interface CallBack_UploadParks {
+//    void UploadParks(List<Park> parksList);
+//}
 
-public class MainActivity extends AppCompatActivity {
+
+
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
     private MapFragment fragment_map;
     private ParksData parksData;
+    private User currentUser;
+    private DatabaseReference myRef;
+    private double lat;
+    private double log;
+
+
 
     int LOCATION_REQUEST_CODE = 1001;
 
@@ -57,10 +70,17 @@ public class MainActivity extends AppCompatActivity {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             startLoginActivity();
         } else {
+            currentUser = new User();
+            addAndUpdateUser();
             initMap();
+            database = FirebaseDatabase.getInstance();
+//            initMap();
+
+
         }
 
     }
+
 
     @Override
     protected void onStart() {
@@ -79,9 +99,12 @@ public class MainActivity extends AppCompatActivity {
         parksData.setCallBack_UploadParks(callBack_uploadParks);
     }
 
-    private void initMap(){
+    private void initMap() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
         fragment_map = new MapFragment();
+        fragment_map.setCallBack_location(callBack_location);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_layout, fragment_map)
@@ -109,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    private void updateUserDatabase() {
+        myRef = database.getReference("Users").child(currentUser.getUid());
+        myRef.setValue(currentUser);
+    }
 
     private void getLastLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -122,6 +149,16 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onSuccess: " + location.toString());
                     Log.d(TAG, "onSuccess: " + location.getLatitude());
                     Log.d(TAG, "onSuccess: " + location.getLongitude());
+                    // TODO: 19/01/2022 put location in user object
+//                    if (currentUser.getUid() != null ) {
+                        lat=location.getLatitude();
+                        log=location.getLongitude();
+//                        updateUserDatabase();
+//                    }
+//                    if(callBack_location != null){
+//                        callBack_location.updateLocation(lat,log);
+//                    }
+//                    fragment_map.showMarker(location.getLatitude(), location.getLongitude());
                 } else {
                     Log.d(TAG, "onFailure: Location was null..");
                 }
@@ -135,6 +172,56 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+    //get current location callback
+    private CallBack_Location callBack_location = new CallBack_Location() {
+        @Override
+        public void updateLocation() {
+            // check if currentUser is not null and the distance is more than 20 meters from the previous location to update lan ,lng
+            if (currentUser.getUid() != null ) {
+                currentUser.setLastLat(lat);
+                currentUser.setLastLng(log);
+                updateUserDatabase();
+            }
+            fragment_map.showMarker(lat, log);
+        }
+    };
+
+    private void addAndUpdateUser() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Users");
+
+        myRef.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    addNewUser();
+                    return;
+                }
+                currentUser = dataSnapshot.getValue(User.class);
+                baseUser = currentUser;
+                if (callBack_location != null) {
+                    callBack_location.updateLocation();
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+    }
+
+    private void addNewUser() {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        User user = new User()
+                .setUid(firebaseAuth.getUid())
+                .setStatus("offline");
+        baseUser = user;
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Users");
+        myRef.child(user.getUid()).setValue(user);
     }
 
     private void startLoginActivity() {
@@ -159,6 +246,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.action_edit:
+                Toast.makeText(this, "Edit Profile", Toast.LENGTH_SHORT).show();
+                openEditProfileActivity();
+                return true;
             case R.id.action_logout:
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                 AuthUI.getInstance().signOut(this)
@@ -172,8 +263,15 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                 return true;
+
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openEditProfileActivity() {
+        Intent myIntent = new Intent(this, EditProfileActivity.class);
+        startActivity(myIntent);
     }
 
     // upload parks to map callback

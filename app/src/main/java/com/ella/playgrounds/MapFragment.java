@@ -1,14 +1,21 @@
 package com.ella.playgrounds;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,27 +28,54 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static GoogleMap mMap;
-    public boolean ready=false;
     private Marker prevMarker;
+    private int ACCESS_LOCATION_REQUEST_CODE = 10001;
+    private boolean markerChanged = false;
+    private boolean zoomOnce = false;
+    private Marker marker;
+    private CallBack_Location callBack_location;
+
+    public void setCallBack_location(CallBack_Location callBack_location){
+        this.callBack_location =callBack_location;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        SupportMapFragment SupportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_mapi);
-        assert SupportMapFragment != null;
-        SupportMapFragment.getMapAsync(this);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_mapi);
+        assert mapFragment != null;
+        mapFragment.getMapAsync(this);
 
-//        geocoder = new Geocoder(MainActivity);
 
         return view;
     }
 
+    //show current user marker
+    public void showMarker(double lat, double lng) {
+        if (markerChanged == true) {
+            marker.remove();
+            markerChanged = false;
+        }
+        marker = mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat, lng)));
+        marker.setIcon(BitmapDescriptorFactory
+                .defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        markerChanged = true;
+        if (!zoomOnce) {
+            zoomOnMarker(marker);
+            zoomOnce = true;
+
+        }
+
+    }
+
+
     // add park marker on map
     public void addParkMarkers(double lat, double lng, String pid) {
         Marker parkMarker;
-        if(mMap!=null) {
+        if (mMap != null) {
             parkMarker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(lat, lng)));
             assert parkMarker != null;
@@ -51,14 +85,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-            mMap=googleMap;
+        mMap = googleMap;
 //            LatLng latLng = new LatLng(27.1751,78.0421);
 //            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("Taj").snippet("wonder");
 //            mMap.addMarker(markerOptions);
 //            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,16);
 //            mMap.animateCamera(cameraUpdate);
-            showParkDetails();
-            ready=true;
+        showParkDetails();
 
 //                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 //                    @Override
@@ -73,7 +106,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //                    }
 //                });
 
-        }
+    }
 
     public void showParkDetails() {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -102,4 +135,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void zoomOnMarker(Marker marker) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13f));
     }
+
+//    private LocationCallback locationCallback = new LocationCallback() {
+//        @Override
+//        public void onLocationResult(LocationResult locationResult) {
+//            if (locationResult == null) {
+//                return;
+//            }
+//            Location location = locationResult.getLocations().get(0);
+//            double lng = location.getLongitude();
+//            double lat = location.getLatitude();
+//            if (callBack_location != null) {
+//                callBack_location.updateLocation();
+//            }
+//        }
+//    };
 }
