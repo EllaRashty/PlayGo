@@ -33,7 +33,7 @@ import android.widget.Toast;
 import java.util.List;
 
 interface CallBack_UploadParks {
-    void  UploadParks(List<Park> parksList);
+    void UploadParks(List<Park> parksList);
 }
 
 public class MainActivity extends AppCompatActivity {
@@ -56,16 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             startLoginActivity();
+        } else {
+            initMap();
         }
-
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-        fragment_map =new MapFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frame_layout, fragment_map)
-                .commit();
-        readParksAndShowOnMap();
 
     }
 
@@ -78,6 +71,22 @@ public class MainActivity extends AppCompatActivity {
         } else {
             askLocationPermission();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        parksData.setCallBack_UploadParks(callBack_uploadParks);
+    }
+
+    private void initMap(){
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        fragment_map = new MapFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout, fragment_map)
+                .commit();
+        readParksAndShowOnMap();
     }
 
     private void askLocationPermission() {
@@ -109,11 +118,11 @@ public class MainActivity extends AppCompatActivity {
         locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                if (location != null){
-                    Log.d(TAG, "onSuccess: "+ location.toString());
-                    Log.d(TAG, "onSuccess: "+ location.getLatitude());
-                    Log.d(TAG, "onSuccess: "+ location.getLongitude());
-                }else{
+                if (location != null) {
+                    Log.d(TAG, "onSuccess: " + location.toString());
+                    Log.d(TAG, "onSuccess: " + location.getLatitude());
+                    Log.d(TAG, "onSuccess: " + location.getLongitude());
+                } else {
                     Log.d(TAG, "onFailure: Location was null..");
                 }
             }
@@ -121,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         locationTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure: "+ e.getLocalizedMessage());
+                Log.d(TAG, "onFailure: " + e.getLocalizedMessage());
 
             }
         });

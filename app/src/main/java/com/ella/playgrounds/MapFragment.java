@@ -1,6 +1,5 @@
 package com.ella.playgrounds;
 
-import android.location.Geocoder;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,7 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static GoogleMap mMap;
-    private Geocoder geocoder;
+    public boolean ready=false;
     private Marker prevMarker;
 
     @Override
@@ -32,6 +30,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         SupportMapFragment SupportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_mapi);
+        assert SupportMapFragment != null;
         SupportMapFragment.getMapAsync(this);
 
 //        geocoder = new Geocoder(MainActivity);
@@ -42,9 +41,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     // add park marker on map
     public void addParkMarkers(double lat, double lng, String pid) {
         Marker parkMarker;
-        parkMarker = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat, lng)));
-        parkMarker.setTag(pid);
+        if(mMap!=null) {
+            parkMarker = mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lat, lng)));
+            assert parkMarker != null;
+            parkMarker.setTag(pid);
+        }
     }
 
     @Override
@@ -56,6 +58,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,16);
 //            mMap.animateCamera(cameraUpdate);
             showParkDetails();
+            ready=true;
 
 //                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 //                    @Override
@@ -75,7 +78,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void showParkDetails() {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
-            public boolean onMarkerClick(Marker marker) {
+            public boolean onMarkerClick(@NonNull Marker marker) {
 
                 if (marker.getTag() != null) {
                     if (prevMarker != null && prevMarker != marker) {
