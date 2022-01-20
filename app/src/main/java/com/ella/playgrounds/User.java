@@ -5,16 +5,18 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private  String uid ;
-    private  String ownerName = "";
-    private  String dogName = "";
+    private  String adultName = "";
+    private  String familyName = "";
+    private  String childName = "";
     private  String phoneNumber = "";
     private  String status = "";
     private  String favoritePark = "";
     private double lastLng=0.0;
     private double lastLat=0.0;
-    private String breed = "";
-    private String dogGender = "";
-    private String age ;
+    private String adultTitle = "";
+    private String adultGender = "";
+    private String childGender = "";
+    private String childAge;
     private String about="";
     private String imageUrl;
 
@@ -32,12 +34,12 @@ public class User implements Serializable {
         return this;
     }
 
-    public String getOwnerName() {
-        return ownerName;
+    public String getAdultName() {
+        return adultName;
     }
 
-    public User setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
+    public User setAdultName(String adultName) {
+        this.adultName = adultName;
         return this;
     }
 
@@ -59,12 +61,12 @@ public class User implements Serializable {
         return this;
     }
 
-    public String getDogName() {
-        return dogName;
+    public String getChildName() {
+        return childName;
     }
 
-    public User setDogName(String dogName) {
-        this.dogName = dogName;
+    public User setChildName(String childName) {
+        this.childName = childName;
         return this;
     }
 
@@ -95,30 +97,30 @@ public class User implements Serializable {
         return this;
     }
 
-    public String getBreed() {
-        return breed;
+    public String getAdultTitle() {
+        return adultTitle;
     }
 
-    public User setBreed(String breed) {
-        this.breed = breed;
+    public User setAdultTitle(String adultTitle) {
+        this.adultTitle = adultTitle;
         return this;
     }
 
-    public String getDogGender() {
-        return dogGender;
+    public String getAdultGender() {
+        return adultGender;
     }
 
-    public User setDogGender(String dogGender) {
-        this.dogGender = dogGender;
+    public User setAdultGender(String adultGender) {
+        this.adultGender = adultGender;
         return this;
     }
 
-    public String getAge() {
-        return age;
+    public String getChildAge() {
+        return childAge;
     }
 
-    public User setAge(String age) {
-        this.age = age;
+    public User setChildAge(String childAge) {
+        this.childAge = childAge;
         return this;
     }
 
@@ -137,6 +139,23 @@ public class User implements Serializable {
 
     public User setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+        return this;
+    }
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public User setFamilyName(String familyName) {
+        this.familyName = familyName;
+        return this;
+    }
+
+    public String getChildGender() {
+        return childGender;
+    }
+
+    public User setChildGender(String childGender) {
+        this.childGender = childGender;
         return this;
     }
 }

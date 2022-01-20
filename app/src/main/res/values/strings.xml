@@ -19,4 +19,8 @@
 
     <string name="park_2_address" translatable="false">Bnei Ephraim ,Tel Aviv-Yafo</string>
     <string name="park_2_name" translatable="false">Bnei Ephraim Playground</string>
+
+
+    <string name="family_name">Family Name</string>
+    <string name="first_name">First Name</string>
 </resources>

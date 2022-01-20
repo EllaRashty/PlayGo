@@ -1,19 +1,38 @@
 package com.ella.playgrounds;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class EditProfileActivity extends BaseActivity {
-    private static String USER_PROFILE = "USER_PROFILE";
+import java.util.Objects;
 
+public class EditProfileActivity extends BaseActivity {
+
+
+    private TextInputLayout childName;
+    private TextInputLayout adultName;
+    private TextInputLayout child_age;
+    private TextInputLayout edit_adult_title;
+    private TextInputLayout child_about;
+    private MaterialButtonToggleGroup adult_gender;
+    private MaterialButtonToggleGroup child_gender;
+    private MaterialButton save_MBTN;
+    private TextInputLayout familyName;
 
     private User currentUser;
 
@@ -22,7 +41,106 @@ public class EditProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
+        getCurrentUserFromDatabase();
+        findViews();
+        init();
+
+    }
+
+    private void init() {
+
+        //save all the details
+        save_MBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveDetails();
+                finish();
+            }
+        });
+
+        childName.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    clearFocus(childName.getEditText());
+                }
+                return false;
+            }
+        });
+
+
+        edit_adult_title.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    clearFocus(edit_adult_title.getEditText());
+                }
+                return false;
+            }
+        });
+
+        child_age.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    clearFocus(child_age.getEditText());
+                }
+                return false;
+            }
+        });
+
+        adultName.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    clearFocus(adultName.getEditText());
+                }
+                return false;
+            }
+        });
+
+        familyName.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    clearFocus(familyName.getEditText());
+                }
+                return false;
+            }
+        });
+
+    }
+
+    public void clearFocus(EditText EditText) {
+        EditText.clearFocus();
+    }
+
+    private void saveDetails() {
+        currentUser.setAbout(child_about.getEditText().getText().toString());
+        currentUser.setAdultName(adultName.getEditText().getText().toString());
+        currentUser.setChildName(childName.getEditText().getText().toString());
+        currentUser.setFamilyName(familyName.getEditText().getText().toString());
+        currentUser.setChildAge(child_age.getEditText().getText().toString());
+        currentUser.setAdultTitle(edit_adult_title.getEditText().getText().toString());
+
+        if (adult_gender.getCheckedButtonId() == R.id.btn_male) {
+            currentUser.setAdultGender("MALE");
+        } else if (adult_gender.getCheckedButtonId() == R.id.edit_female) {
+            currentUser.setAdultGender("FEMALE");
+        }
+        if (child_gender.getCheckedButtonId() == R.id.child_boy) {
+            currentUser.setChildGender("BOY");
+        } else if (child_gender.getCheckedButtonId() == R.id.child_girl) {
+            currentUser.setChildGender("GIRL");
+        }
+
+        updateUserDatabase();
+
+    }
+
+    private void getCurrentUserFromDatabase() {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -31,7 +149,7 @@ public class EditProfileActivity extends BaseActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 currentUser = snapshot.getValue(User.class);
                 baseUser = currentUser;
-//                setUserText(currentUser);
+                setUserText(currentUser);
             }
 
             @Override
@@ -39,7 +157,51 @@ public class EditProfileActivity extends BaseActivity {
 
             }
         });
+    }
 
+    private void setUserText(User currentUser) {
+        if (currentUser.getAdultName() == null) {
+            adultName.getEditText().setText("New Member");
+        } else {
+            adultName.getEditText().setText(currentUser.getAdultName());
+        }
+        childName.getEditText().setText(currentUser.getChildName());
+        edit_adult_title.getEditText().setText(currentUser.getAdultTitle());
+        child_about.getEditText().setText(currentUser.getAbout());
+        child_age.getEditText().setText(currentUser.getChildAge());
+        familyName.getEditText().setText(currentUser.getFamilyName());
 
+        if (currentUser.getAdultGender().equals("MALE")) {
+            adult_gender.check(R.id.btn_male);
+        } else if (currentUser.getAdultGender().equals("FEMALE")) {
+            adult_gender.check(R.id.edit_female);
+        }
+        if (currentUser.getChildGender().equals("BOY")) {
+            child_gender.check(R.id.child_boy);
+        } else if (currentUser.getAdultGender().equals("GIRL")) {
+            child_gender.check(R.id.child_girl);
+        }
+    }
+
+    private void findViews() {
+
+        save_MBTN = findViewById(R.id.save_MBTN);
+        adult_gender = findViewById(R.id.edit_gender);
+        child_gender = findViewById(R.id.child_gender);
+        edit_adult_title = findViewById(R.id.edit_title);
+        child_age = findViewById(R.id.child_age);
+        adultName = findViewById(R.id.edit_firstName);
+        childName = findViewById(R.id.edit_childName);
+        child_about = findViewById(R.id.child_about);
+        familyName = findViewById(R.id.edit_familyName);
+//        edit_IMG_add = findViewById(R.id.edit_IMG_add);
+//        edit_IMGG_add = findViewById(R.id.edit_IMGG_add);
+
+    }
+
+    private void updateUserDatabase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Users").child(currentUser.getUid());
+        myRef.setValue(currentUser);
     }
 }
