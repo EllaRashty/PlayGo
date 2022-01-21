@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 
@@ -24,6 +23,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +33,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -40,7 +43,6 @@ import java.util.List;
 //interface CallBack_UploadParks {
 //    void UploadParks(List<Park> parksList);
 //}
-
 
 
 public class MainActivity extends BaseActivity {
@@ -51,8 +53,19 @@ public class MainActivity extends BaseActivity {
     private User currentUser;
     private DatabaseReference myRef;
     private double lat;
-    private double log;
+    private double lng;
 
+    private TextView map_LBL_park_name;
+    private TextView popup_LBL_online;
+    private TextView popup_LBL_rating;
+    private TextView popup_LBL_rate_users;
+    private TextView popup_LBL_distance;
+    private MaterialButton popup_BTN_goto;
+    private Park currentPark;
+    private Park park;
+    private Distance distance;
+    private RatingBar park_RB_rate;
+    private Rating rating;
 
 
     int LOCATION_REQUEST_CODE = 1001;
@@ -74,7 +87,6 @@ public class MainActivity extends BaseActivity {
             addAndUpdateUser();
             initMap();
             database = FirebaseDatabase.getInstance();
-//            initMap();
 
 
         }
@@ -101,9 +113,10 @@ public class MainActivity extends BaseActivity {
 
     private void initMap() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
+        distance = new Distance();
         fragment_map = new MapFragment();
         fragment_map.setCallBack_location(callBack_location);
+        fragment_map.setCallBack_showPopUp(callBack_showPopUp);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -132,6 +145,7 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
+
     private void updateUserDatabase() {
         myRef = database.getReference("Users").child(currentUser.getUid());
         myRef.setValue(currentUser);
@@ -149,16 +163,8 @@ public class MainActivity extends BaseActivity {
                     Log.d(TAG, "onSuccess: " + location.toString());
                     Log.d(TAG, "onSuccess: " + location.getLatitude());
                     Log.d(TAG, "onSuccess: " + location.getLongitude());
-                    // TODO: 19/01/2022 put location in user object
-//                    if (currentUser.getUid() != null ) {
-                        lat=location.getLatitude();
-                        log=location.getLongitude();
-//                        updateUserDatabase();
-//                    }
-//                    if(callBack_location != null){
-//                        callBack_location.updateLocation(lat,log);
-//                    }
-//                    fragment_map.showMarker(location.getLatitude(), location.getLongitude());
+                    lat = location.getLatitude();
+                    lng = location.getLongitude();
                 } else {
                     Log.d(TAG, "onFailure: Location was null..");
                 }
@@ -168,22 +174,22 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG, "onFailure: " + e.getLocalizedMessage());
-
             }
         });
 
     }
+
     //get current location callback
     private CallBack_Location callBack_location = new CallBack_Location() {
         @Override
         public void updateLocation() {
             // check if currentUser is not null and the distance is more than 20 meters from the previous location to update lan ,lng
-            if (currentUser.getUid() != null ) {
+            if (currentUser.getUid() != null && distance.checkIfDistanceChanged(lat, lng)) {
                 currentUser.setLastLat(lat);
-                currentUser.setLastLng(log);
+                currentUser.setLastLng(lng);
                 updateUserDatabase();
             }
-            fragment_map.showMarker(lat, log);
+            fragment_map.showMarker(lat, lng);
         }
     };
 
@@ -204,13 +210,134 @@ public class MainActivity extends BaseActivity {
                 if (callBack_location != null) {
                     callBack_location.updateLocation();
                 }
-
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
 
+    }
+
+    //create and show pop up
+    // the popup shows marker details on map
+    public void showPopUpWindowOnMap(String pid) {
+        PopUPWindow mPopupWindow = new PopUPWindow(this);
+        updatePopUpView(pid, mPopupWindow.PopUpWindowOnMap());
+    }
+
+    private void updatePopUpView(String pid, View popUpView) {
+        map_LBL_park_name = popUpView.findViewById(R.id.map_LBL_park_name);
+        popup_LBL_online = popUpView.findViewById(R.id.popup_LBL_online);
+        popup_LBL_rating = popUpView.findViewById(R.id.popup_LBL_rating);
+        popup_LBL_rate_users = popUpView.findViewById(R.id.popup_LBL_rate_users);
+        popup_LBL_distance = popUpView.findViewById(R.id.popup_LBL_distance);
+        popup_BTN_goto = popUpView.findViewById(R.id.popup_BTN_goto);
+
+
+        //look for current park
+        //init view items
+        for (Park park : parksData.getParksList()) {
+            if (park.getPid() == pid) {
+                currentPark = park;
+                setDistanceFromCurrLocation();
+                updateParkByPid(currentPark.getPid(), false);
+                map_LBL_park_name.setText(currentPark.getName());
+//                countOnlineUsers();
+            }
+        }
+
+
+        //go to button on the popup
+        popup_BTN_goto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // get park by pid and open park activity
+                updateParkByPid(currentPark.getPid(), true);
+            }
+        });
+
+
+    }
+
+    private void setDistanceFromCurrLocation() {
+        if(currentPark.getLat() != 0.0 && currentPark.getLng() !=0.0){
+            int dist = distance.calcDistance(currentPark.getLat(), currentPark.getLng());
+            popup_LBL_distance.setText("" + dist + "m");
+        }
+    }
+
+
+    private void updateParkByPid(String pid, boolean openParkActivity) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Parks");
+
+        myRef.child(pid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                park = dataSnapshot.getValue(Park.class);
+
+                if (openParkActivity) {
+                    currentPark = park;
+                    openParkActivity();
+                } else {
+                    getRatingByPid(park.getPid());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+    }
+
+    private void getRatingByPid(String pid) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Rating");
+
+        myRef.child(pid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Rating rating = dataSnapshot.getValue(Rating.class);
+                    popup_LBL_rate_users.setText("" + rating.getTotNumOfRates());
+                    popup_LBL_rating.setText("" + rating.getTotRating());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+    }
+
+    private void getUserRating() {
+        float rate = park_RB_rate.getRating();
+        rating.setRating(rate);
+        rating.calcRating();
+        park.setRating(rating.getTotRating());
+        rating.addUserToRatingList(currentUser.getUid());
+        park_RB_rate.setRating(rating.getTotRating());
+        park_RB_rate.setIsIndicator(true);
+
+//        Toast.makeText(Activity_Park.this, "Thank`s for rating !", Toast.LENGTH_SHORT).show();
+        updateRateDatabase();
+        updateParkDatabase();
+    }
+
+    private void updateRateDatabase() {
+        myRef = database.getReference("Rating").child(park.getPid());
+        myRef.setValue(rating);
+    }
+
+    private void updateParkDatabase() {
+        myRef = database.getReference("Parks").child(park.getPid());
+        myRef.setValue(park);
+    }
+
+    private void openParkActivity() {
     }
 
     private void addNewUser() {
@@ -282,6 +409,13 @@ public class MainActivity extends BaseActivity {
                 fragment_map.addParkMarkers(park.getLat(), park.getLng(), park.getPid());
 
             }
+        }
+    };
+
+    private CallBack_showPopUp callBack_showPopUp = new CallBack_showPopUp() {
+        @Override
+        public void PopUpWindowOnMap(String pid) {
+            showPopUpWindowOnMap(pid);
         }
     };
 

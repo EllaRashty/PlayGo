@@ -34,9 +34,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private boolean zoomOnce = false;
     private Marker marker;
     private CallBack_Location callBack_location;
+    private CallBack_showPopUp callBack_showPopUp;
+
 
     public void setCallBack_location(CallBack_Location callBack_location){
         this.callBack_location =callBack_location;
+    }
+    public void setCallBack_showPopUp(CallBack_showPopUp callBack_showPopUp) {
+        this.callBack_showPopUp = callBack_showPopUp;
     }
 
     @Override
@@ -123,7 +128,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     marker.setIcon(BitmapDescriptorFactory
                             .defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
                     zoomOnMarker(marker);
-//                    callBack_showPopUp.PopUpWindowOnMap((String) marker.getTag());
+                    callBack_showPopUp.PopUpWindowOnMap((String) marker.getTag());
                     return true;
                 }
                 return false;
@@ -150,4 +155,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //            }
 //        }
 //    };
+
+
 }

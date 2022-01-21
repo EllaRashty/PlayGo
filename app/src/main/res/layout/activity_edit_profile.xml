@@ -53,7 +53,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edit_familyName"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/edit_IMG_add"
@@ -63,7 +63,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLength="15"
@@ -74,7 +74,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edit_firstName"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="60dp"
             android:layout_below="@+id/edit_familyName"
             android:layout_marginLeft="14dp"
             android:layout_marginTop="18dp"
@@ -87,7 +87,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLength="18"
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/edit_firstName"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="25dp"
             android:layout_marginRight="20dp"
             android:orientation="horizontal"
             app:singleSelection="true">
@@ -112,6 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                app:cornerRadius="18dp"
                 android:text="Male" />
 
             <Button
@@ -120,6 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                app:cornerRadius="18dp"
                 android:text="Female"
 
                 />
@@ -128,20 +130,20 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edit_title"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_below="@+id/edit_firstName"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginRight="15dp"
             android:layout_toStartOf="@id/edit_gender"
-            android:hint="title"
+            android:hint="Title"
 
             app:boxBackgroundColor="@android:color/transparent"
             app:startIconDrawable="@drawable/ic_human">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLength="18"
@@ -165,7 +167,7 @@
             android:id="@+id/child_LBL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="15dp"
             android:text="Child Info :"
             android:textColor="@color/black"
             android:textSize="20dp" />
@@ -173,8 +175,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edit_childName"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginLeft="14dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="25dp"
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/child_LBL"
             android:hint="Child Name"
@@ -183,7 +185,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLength="15"
@@ -196,7 +198,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/edit_childName"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="29dp"
             android:layout_marginRight="20dp"
             android:orientation="horizontal"
             app:singleSelection="true">
@@ -207,6 +209,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                app:cornerRadius="19dp"
                 android:text="BOY" />
 
             <Button
@@ -216,6 +219,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingBottom="0dp"
+                app:cornerRadius="19dp"
                 android:text="GIRL"
 
                 />
@@ -227,7 +231,7 @@
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/edit_childName"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
             android:layout_toLeftOf="@id/child_gender"
             android:hint="Age"
@@ -239,7 +243,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
                 android:inputType="number"
-                android:maxLength="15"
+                android:maxLength="3"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -252,7 +256,7 @@
             android:layout_below="@id/child_gender"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:layout_marginRight="30dp"
             android:hint="About">
 
@@ -283,9 +287,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="30dp"
             android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
+            android:layout_marginBottom="30dp"
             android:text="save"
             android:textColor="@color/purple_500"
             app:cornerRadius="50dp"
