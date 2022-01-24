@@ -37,6 +37,7 @@ public class ParkActivity extends BaseActivity {
     private TextView park_LBL_status_lights;
     private TextView park_LBL_status_benches;
     private TextView park_LBL_status_water;
+    private Button park_IBTN_chat;
     private ImageButton back;
     private AppCompatImageView park_IMG;
     private FirebaseDatabase database;
@@ -84,6 +85,9 @@ public class ParkActivity extends BaseActivity {
 
         list_RV_users = findViewById(R.id.list_RV_users);
 
+        park_IBTN_chat = findViewById(R.id.chat_BTM);
+
+
     }
 
     private void init() {
@@ -112,6 +116,14 @@ public class ParkActivity extends BaseActivity {
                 .with(this)
                 .load(park.getParkImage1())
                 .into(park_IMG);
+
+        //open chat
+        park_IBTN_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openChatActivity();
+            }
+        });
     }
 
     private void setAdapter() {
@@ -239,4 +251,11 @@ public class ParkActivity extends BaseActivity {
         startActivity(mapIntent);
 
     }
+
+    private void openChatActivity() {
+        Intent myIntent2 = new Intent(this, ChatActivity.class);
+        myIntent2.putExtra("PARK_PID", park.getPid());
+        startActivity(myIntent2);
+    }
+
 }
