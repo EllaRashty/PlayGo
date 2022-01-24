@@ -12,10 +12,11 @@ public class Park implements Serializable {
     private double lng = 0.0;
     private double lat = 0.0;
     private String pid = "";
-    private  String name="";
+    private String name = "";
     private String address = "";
     private float rating;
     private List<String> usersUidList;
+    private String parkImage1; // link
 
     private String water = "";
     private String shade = "";
@@ -84,6 +85,14 @@ public class Park implements Serializable {
         return this;
     }
 
+    public String getParkImage1() {
+        return parkImage1;
+    }
+
+    public Park setParkImage1(String parkImage1) {
+        this.parkImage1 = parkImage1;
+        return this;
+    }
 
     public float getRating() {
         return rating;

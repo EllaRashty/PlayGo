@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_RL_profile"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:layout_margin="5dp"
+    android:layout_marginBottom="10dp"
+    android:clickable="true"
+    android:orientation="horizontal"
+    app:cardCornerRadius="10dp"
+    android:focusable="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/list_IMG_user"
+            android:layout_width="45dp"
+            android:layout_height="42dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:background="#A1F3A4"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_human"
+            app:shapeAppearanceOverlay="@style/circleImageView" />
+
+        <TextView
+            android:id="@+id/list_LBL_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/list_IMG_user"
+            android:text="Contact name"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:id="@+id/list_IMG_status"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:src="@android:drawable/presence_online" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

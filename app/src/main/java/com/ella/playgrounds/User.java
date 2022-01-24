@@ -11,8 +11,10 @@ public class User implements Serializable {
     private  String phoneNumber = "";
     private  String status = "";
     private  String favoritePark = "";
-    private double lastLng=0.0;
-    private double lastLat=0.0;
+    private double lastLng;
+//    private double lastLng=0.0;
+//    private double lastLat=0.0;
+    private double lastLat;
     private String adultTitle = "";
     private String adultGender = "";
     private String childGender = "";
@@ -23,6 +25,8 @@ public class User implements Serializable {
 
 
     public User() {
+        lastLng=0.0;
+        lastLat=0.0;
     }
 
     public String getUid() {

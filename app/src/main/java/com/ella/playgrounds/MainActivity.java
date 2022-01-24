@@ -40,11 +40,6 @@ import android.widget.Toast;
 
 import java.util.List;
 
-//interface CallBack_UploadParks {
-//    void UploadParks(List<Park> parksList);
-//}
-
-
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
@@ -160,9 +155,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSuccess(Location location) {
                 if (location != null) {
-                    Log.d(TAG, "onSuccess: " + location.toString());
-                    Log.d(TAG, "onSuccess: " + location.getLatitude());
-                    Log.d(TAG, "onSuccess: " + location.getLongitude());
                     lat = location.getLatitude();
                     lng = location.getLongitude();
                 } else {
@@ -205,6 +197,7 @@ public class MainActivity extends BaseActivity {
                     addNewUser();
                     return;
                 }
+
                 currentUser = dataSnapshot.getValue(User.class);
                 baseUser = currentUser;
                 if (callBack_location != null) {
@@ -313,19 +306,6 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private void getUserRating() {
-        float rate = park_RB_rate.getRating();
-        rating.setRating(rate);
-        rating.calcRating();
-        park.setRating(rating.getTotRating());
-        rating.addUserToRatingList(currentUser.getUid());
-        park_RB_rate.setRating(rating.getTotRating());
-        park_RB_rate.setIsIndicator(true);
-
-//        Toast.makeText(Activity_Park.this, "Thank`s for rating !", Toast.LENGTH_SHORT).show();
-        updateRateDatabase();
-        updateParkDatabase();
-    }
 
     private void updateRateDatabase() {
         myRef = database.getReference("Rating").child(park.getPid());
@@ -338,6 +318,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void openParkActivity() {
+        Intent myIntent = new Intent(this, ParkActivity.class);
+        myIntent.putExtra("PARK", currentPark);
+        startActivity(myIntent);
     }
 
     private void addNewUser() {

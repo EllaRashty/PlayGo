@@ -19,6 +19,11 @@
         <item name="windowNoTitle">false</item>
     </style>
 
+    <style name="circleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
     <style name="Theme.Playgrounds.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Playgrounds.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

@@ -41,14 +41,14 @@
         android:layout_below="@+id/title"
         android:layout_marginTop="20dp">
 
-        <ImageButton
-            android:id="@+id/edit_IMG_add"
-            android:layout_width="120dp"
-            android:layout_height="110dp"
+        <ImageView
+            android:id="@+id/pick_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="13dp"
-            android:background="@color/purple_500"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_launcher_background" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edit_familyName"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/edit_IMG_add"
+            android:layout_toRightOf="@+id/pick_img"
             android:hint="@string/family_name"
             app:boxBackgroundColor="@android:color/transparent"
             app:startIconDrawable="@drawable/ic_launcher_foreground">
@@ -79,7 +79,7 @@
             android:layout_marginLeft="14dp"
             android:layout_marginTop="18dp"
             android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/edit_IMG_add"
+            android:layout_toRightOf="@+id/pick_img"
             android:hint="@string/first_name"
 
             app:boxBackgroundColor="@android:color/transparent"
@@ -264,7 +264,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:imeOptions="actionDone"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:maxLines="4" />
 
         </com.google.android.material.textfield.TextInputLayout>
