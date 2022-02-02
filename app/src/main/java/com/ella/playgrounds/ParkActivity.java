@@ -8,12 +8,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,7 +42,7 @@ public class ParkActivity extends BaseActivity {
     private TextView park_LBL_status_lights;
     private TextView park_LBL_status_benches;
     private TextView park_LBL_status_water;
-    private Button park_IBTN_chat;
+    private ImageButton park_IBTN_chat;
     private ImageButton back;
     private AppCompatImageView park_IMG;
     private FirebaseDatabase database;
@@ -46,6 +51,11 @@ public class ParkActivity extends BaseActivity {
     private DatabaseReference myRef;
     private RecyclerView list_RV_users;
     private FirebaseAuth firebaseAuth;
+    private MaterialButtonToggleGroup btn_online;
+
+    private Rating rating;
+    private RatingBar park_RB_rate;
+    private MaterialButton park_MBTN_rate;
 
 
     @Override
@@ -58,7 +68,6 @@ public class ParkActivity extends BaseActivity {
 
         findView();
         init();
-
         getCurrentUserFromDatabase();
         setAdapter();
 
@@ -74,6 +83,8 @@ public class ParkActivity extends BaseActivity {
         park_LBL_status_water = findViewById(R.id.park_LBL_status_water);
         park_LBL_name = findViewById(R.id.park_LBL_name);
 
+//        btn_online = findViewById(R.id.edit_online);
+
 
         park_BTN_navigation = findViewById(R.id.park_BTN_navigation);
         park_LBL_status_address.setText(park.getAddress());
@@ -86,6 +97,7 @@ public class ParkActivity extends BaseActivity {
         list_RV_users = findViewById(R.id.list_RV_users);
 
         park_IBTN_chat = findViewById(R.id.chat_BTM);
+        park_RB_rate = findViewById(R.id.park_RB_rate);
 
 
     }
@@ -94,6 +106,7 @@ public class ParkActivity extends BaseActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         users = new ArrayList<>();
+        rating = new Rating();
         currentUser = new User();
 
         park_BTN_navigation = findViewById(R.id.park_BTN_navigation);
@@ -124,6 +137,32 @@ public class ParkActivity extends BaseActivity {
                 openChatActivity();
             }
         });
+
+        park_MBTN_rate=findViewById(R.id.park_MBTN_rate);
+        park_MBTN_rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!rating.checkIfUserExist(currentUser.getUid())) {
+                    getUserRating();
+                } else {
+                    Toast.makeText(ParkActivity.this, "You have already rated the park !", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+//        btn_online.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (btn_online.getCheckedButtonId() == R.id.btn_on) {
+//                    setNewStatus("online", currentUser);
+//                    Log.d("TAG","online");
+//                } else if (btn_online.getCheckedButtonId() == R.id.btn_off) {
+//                    setNewStatus("offline", currentUser);
+//                    Log.d("TAG","offline");
+//
+//                }
+//            }
+//        });
     }
 
     private void setAdapter() {
@@ -134,7 +173,7 @@ public class ParkActivity extends BaseActivity {
         userAdapter.setClickListener(new UserAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-//                openProfileActivity(users.get(position));
+                openProfileActivity(users.get(position));
             }
         });
     }
@@ -151,7 +190,41 @@ public class ParkActivity extends BaseActivity {
                 baseUser = currentUser;
 //                checkIfParkIsFavorite();
                 getUsersInParkList(database);
-//                getRatesFromDatabase();
+                getRatesFromDatabase();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    private void getUserRating() {
+        float rate = park_RB_rate.getRating();
+        rating.setRating(rate);
+        rating.calcRating();
+        park.setRating(rating.getTotRating());
+        rating.addUserToRatingList(currentUser.getUid());
+        park_RB_rate.setRating(rating.getTotRating());
+        park_RB_rate.setIsIndicator(true);
+
+        Toast.makeText(ParkActivity.this, "Thank`s for rating !", Toast.LENGTH_SHORT).show();
+        updateRateDatabase();
+        updateParkDatabase();
+    }
+
+    private void getRatesFromDatabase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.getReference("Rating").child(park.getPid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    updateRateDatabase();
+                } else {
+                    rating = snapshot.getValue(Rating.class);
+                    checkRate();
+                    park_RB_rate.setRating((float) rating.getTotRating());
+                }
             }
 
             @Override
@@ -161,6 +234,17 @@ public class ParkActivity extends BaseActivity {
         });
     }
 
+    private void checkRate() {
+        String uid = currentUser.getUid();
+        if (rating.checkIfUserExist(uid)) {
+            park_RB_rate.setIsIndicator(true);
+        }
+    }
+
+    private void updateRateDatabase() {
+        myRef = database.getReference("Rating").child(park.getPid());
+        myRef.setValue(rating);
+    }
     private void getUsersInParkList(FirebaseDatabase database) {
         database.getReference("Users").addValueEventListener(new ValueEventListener() {
             @Override
@@ -168,7 +252,6 @@ public class ParkActivity extends BaseActivity {
                 for (DataSnapshot key : snapshot.getChildren()) {
                     try{
                         User user = key.getValue(User.class);
-                        //init distance with user coordinates
                         Distance distance_temp = new Distance();
                         initDistance(distance_temp, user);
                         //if current park is user`s favorite park - add user to list
@@ -194,6 +277,11 @@ public class ParkActivity extends BaseActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+
+    private void updateParkDatabase() {
+        myRef = database.getReference("Parks").child(park.getPid());
+        myRef.setValue(park);
     }
 
     private void updateUsersStatusList(User user) {
@@ -257,5 +345,12 @@ public class ParkActivity extends BaseActivity {
         myIntent2.putExtra("PARK_PID", park.getPid());
         startActivity(myIntent2);
     }
-
+    private void openProfileActivity(User user) {
+        //todo open profile activity
+        //todo send user to profile activity
+        //todo create profile activity
+        Intent myIntent = new Intent(ParkActivity.this, ProfileActivity.class);
+        myIntent.putExtra("USER_PROFILE", user);
+        startActivity(myIntent);
+    }
 }

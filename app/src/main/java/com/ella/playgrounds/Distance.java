@@ -3,7 +3,7 @@ package com.ella.playgrounds;
 import android.location.Location;
 
 public class Distance {
-    private final int DISTANCE_FROM_PARK = 3000;
+    private final int DISTANCE_FROM_PARK = 300;
     private double user_lat;
     private double user_lng;
 
@@ -16,16 +16,15 @@ public class Distance {
     public boolean checkDistance(double park_lat, double park_lng) {
         float[] distance = new float[1];
 
-        Location.distanceBetween(user_lat,
-                user_lng, park_lat,
-                park_lng, distance);
+        Location.distanceBetween(user_lat, user_lng,
+                park_lat, park_lng,
+                distance);
 
         if (distance[0] > DISTANCE_FROM_PARK) {
             return false;
 
         } else if (distance[0] < DISTANCE_FROM_PARK) {
             return true;
-
         }
 
         return false;

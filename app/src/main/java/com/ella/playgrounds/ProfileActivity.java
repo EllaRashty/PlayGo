@@ -10,6 +10,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class ProfileActivity extends BaseActivity {
     private static String USER_PROFILE = "USER_PROFILE";
     private User user;
@@ -20,6 +22,8 @@ public class ProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        Objects.requireNonNull(getSupportActionBar()).hide();
+
         //get user
         user = (User) getIntent().getSerializableExtra(USER_PROFILE);
         baseUser = user;

@@ -26,14 +26,14 @@ public class ParksData {
     public ParksData() {
 
         // init the all the parks
-        createParks();
+//        createParks();
     }
 
     public ParksData(Context context) {
         this.context = context;
 
         // init the all the parks
-        createParks();
+//        createParks();
     }
 
     public List<Park> getParksList() {
@@ -78,7 +78,7 @@ public class ParksData {
 
         Park park2 = new Park().setAddress(context.getString(R.string.park_2_address)).setLat(32.114151).setLng(34.817486).setPid("park_2")
                 .setWater("yes").setShade("yes").setLights("yes").setBenches("1")
-                .setName(context.getString(R.string.park_2_name));
+                .setName(context.getString(R.string.park_2_name)).setParkImage1("https://www.themoviedb.org/t/p/w600_and_h900_bestv2/1MJNcPZy46hIy2CmSqOeru0yr5C.jpg");
 
 
 

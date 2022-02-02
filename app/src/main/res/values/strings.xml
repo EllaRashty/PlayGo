@@ -21,6 +21,6 @@
     <string name="park_2_name" translatable="false">Bnei Ephraim Playground</string>
 
 
-    <string name="family_name">Family Name</string>
-    <string name="first_name">First Name</string>
+    <string name="family_name">\t Family Name</string>
+    <string name="first_name">\t First Name</string>
 </resources>

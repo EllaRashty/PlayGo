@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -59,10 +60,8 @@ public class MainActivity extends BaseActivity {
     private Park currentPark;
     private Park park;
     private Distance distance;
-    private RatingBar park_RB_rate;
-    private Rating rating;
 
-
+    private FloatingActionButton fab;
     int LOCATION_REQUEST_CODE = 1001;
 
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -81,11 +80,24 @@ public class MainActivity extends BaseActivity {
             currentUser = new User();
             addAndUpdateUser();
             initMap();
+            findView();
             database = FirebaseDatabase.getInstance();
 
 
         }
 
+    }
+
+    private void findView() {
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getLastLocation();
+                updateLocationUser();
+                fragment_map.zoomOnMarker(fragment_map.marker);
+            }
+        });
     }
 
 
@@ -129,6 +141,13 @@ public class MainActivity extends BaseActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
             }
         }
+    }
+
+    private void updateLocationUser() {
+        currentUser.setLastLat(lat);
+        currentUser.setLastLng(lng);
+        updateUserDatabase();
+        fragment_map.showMarker(lat, lng);
     }
 
     @Override
@@ -177,11 +196,9 @@ public class MainActivity extends BaseActivity {
         public void updateLocation() {
             // check if currentUser is not null and the distance is more than 20 meters from the previous location to update lan ,lng
             if (currentUser.getUid() != null && distance.checkIfDistanceChanged(lat, lng)) {
-                currentUser.setLastLat(lat);
-                currentUser.setLastLng(lng);
-                updateUserDatabase();
+                updateLocationUser();
             }
-            fragment_map.showMarker(lat, lng);
+//            fragment_map.showMarker(lat, lng);
         }
     };
 
@@ -212,6 +229,35 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    //count online users in current park and update popup view
+    private void countOnlineUsers() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Users");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int numOfOnlineUsers = 0;
+                for (DataSnapshot key : dataSnapshot.getChildren()) {
+                    try {
+
+                        User user = key.getValue(User.class);
+                        if (currentPark.getUsersUidList().contains(user.getUid()) && user.getStatus().equals("online")) {
+                            numOfOnlineUsers++;
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+                popup_LBL_online.setText("" + numOfOnlineUsers);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+    }
+
     //create and show pop up
     // the popup shows marker details on map
     public void showPopUpWindowOnMap(String pid) {
@@ -236,7 +282,7 @@ public class MainActivity extends BaseActivity {
                 setDistanceFromCurrLocation();
                 updateParkByPid(currentPark.getPid(), false);
                 map_LBL_park_name.setText(currentPark.getName());
-//                countOnlineUsers();
+                countOnlineUsers();
             }
         }
 
@@ -254,7 +300,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setDistanceFromCurrLocation() {
-        if(currentPark.getLat() != 0.0 && currentPark.getLng() !=0.0){
+        if (currentPark.getLat() != 0.0 && currentPark.getLng() != 0.0) {
             int dist = distance.calcDistance(currentPark.getLat(), currentPark.getLng());
             popup_LBL_distance.setText("" + dist + "m");
         }
@@ -307,16 +353,6 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    private void updateRateDatabase() {
-        myRef = database.getReference("Rating").child(park.getPid());
-        myRef.setValue(rating);
-    }
-
-    private void updateParkDatabase() {
-        myRef = database.getReference("Parks").child(park.getPid());
-        myRef.setValue(park);
-    }
-
     private void openParkActivity() {
         Intent myIntent = new Intent(this, ParkActivity.class);
         myIntent.putExtra("PARK", currentPark);
@@ -327,6 +363,7 @@ public class MainActivity extends BaseActivity {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         User user = new User()
                 .setUid(firebaseAuth.getUid())
+                .setAdultName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())
                 .setStatus("offline");
         baseUser = user;
         FirebaseDatabase database = FirebaseDatabase.getInstance();

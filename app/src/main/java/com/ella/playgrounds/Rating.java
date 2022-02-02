@@ -139,10 +139,8 @@ public class Rating {
 
     public boolean checkIfUserExist(String uid) {
         if (!userId.isEmpty() && userId.contains(uid)) {
-
             return true;
         }
-
         return false;
     }
 }

@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -49,6 +50,7 @@ public class EditProfileActivity extends BaseActivity {
     private MaterialButtonToggleGroup adult_gender;
     private MaterialButtonToggleGroup child_gender;
     private MaterialButton save_MBTN;
+    private MaterialButton cancel_MBTN;
     private TextInputLayout familyName;
 
     private User currentUser;
@@ -270,7 +272,6 @@ public class EditProfileActivity extends BaseActivity {
         } else if (child_gender.getCheckedButtonId() == R.id.child_girl) {
             currentUser.setChildGender("GIRL");
         }
-
         updateUserDatabase();
 
     }
@@ -294,6 +295,7 @@ public class EditProfileActivity extends BaseActivity {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void setUserText(User currentUser) {
         if (currentUser.getAdultName() == null) {
             adultName.getEditText().setText("New Member");
@@ -313,7 +315,7 @@ public class EditProfileActivity extends BaseActivity {
         }
         if (currentUser.getChildGender().equals("BOY")) {
             child_gender.check(R.id.child_boy);
-        } else if (currentUser.getAdultGender().equals("GIRL")) {
+        } else if (currentUser.getChildGender().equals("GIRL")) {
             child_gender.check(R.id.child_girl);
         }
     }
@@ -321,6 +323,7 @@ public class EditProfileActivity extends BaseActivity {
     private void findViews() {
 
         save_MBTN = findViewById(R.id.save_MBTN);
+        cancel_MBTN = findViewById(R.id.cancel_MBTN);
         adult_gender = findViewById(R.id.edit_gender);
         child_gender = findViewById(R.id.child_gender);
         edit_adult_title = findViewById(R.id.edit_title);

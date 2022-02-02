@@ -32,7 +32,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private int ACCESS_LOCATION_REQUEST_CODE = 10001;
     private boolean markerChanged = false;
     private boolean zoomOnce = false;
-    private Marker marker;
+    public Marker marker;
     private CallBack_Location callBack_location;
     private CallBack_showPopUp callBack_showPopUp;
 
@@ -71,7 +71,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (!zoomOnce) {
             zoomOnMarker(marker);
             zoomOnce = true;
-
         }
 
     }

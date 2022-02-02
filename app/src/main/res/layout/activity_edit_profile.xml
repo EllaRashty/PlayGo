@@ -54,12 +54,12 @@
             android:id="@+id/edit_familyName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/pick_img"
             android:hint="@string/family_name"
             app:boxBackgroundColor="@android:color/transparent"
-            app:startIconDrawable="@drawable/ic_launcher_foreground">
+            app:startIconDrawable="@drawable/ic_family">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -67,6 +67,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLength="15"
+
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -76,20 +77,22 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_below="@+id/edit_familyName"
-            android:layout_marginLeft="14dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginTop="18dp"
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/pick_img"
             android:hint="@string/first_name"
+            android:textAlignment="center"
 
             app:boxBackgroundColor="@android:color/transparent"
-            app:startIconDrawable="@drawable/ic_launcher_foreground">
+            app:startIconDrawable="@drawable/ic_firstname">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
                 android:inputType="text"
+                android:textAlignment="center"
                 android:maxLength="18"
                 android:maxLines="1" />
 
@@ -112,8 +115,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:cornerRadius="18dp"
-                android:text="Male" />
+                android:text="Male"
+                app:cornerRadius="18dp" />
 
             <Button
                 android:id="@+id/edit_female"
@@ -121,8 +124,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:cornerRadius="18dp"
                 android:text="Female"
+                app:cornerRadius="18dp"
 
                 />
         </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -176,12 +179,12 @@
             android:id="@+id/edit_childName"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="35dp"
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/child_LBL"
-            android:hint="Child Name"
+            android:hint="\t Child Name"
             app:boxBackgroundColor="@android:color/transparent"
-            app:startIconDrawable="@drawable/ic_launcher_foreground">
+            app:startIconDrawable="@drawable/ic_child">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -236,7 +239,7 @@
             android:layout_toLeftOf="@id/child_gender"
             android:hint="Age"
             app:boxBackgroundColor="@android:color/transparent"
-            app:startIconDrawable="@drawable/ic_human">
+            app:startIconDrawable="@drawable/ic_calander">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -274,11 +277,26 @@
 
     <RelativeLayout
         android:id="@+id/btn_Bottom"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/child_RLT"
-
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         >
+
+
+
+        <com.google.android.material.button.MaterialButton
+
+            android:id="@+id/cancel_MBTN"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cancel"
+            android:textColor="@color/purple_500"
+            app:cornerRadius="50dp"
+            android:layout_marginHorizontal="15dp"
+            app:strokeColor="@color/purple_500" />
 
         <com.google.android.material.button.MaterialButton
 
@@ -286,12 +304,12 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="30dp"
             android:text="save"
             android:textColor="@color/purple_500"
             app:cornerRadius="50dp"
+            android:layout_marginHorizontal="15dp"
+
+            android:layout_toRightOf="@id/cancel_MBTN"
             app:strokeColor="@color/purple_500" />
 
     </RelativeLayout>

@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="6dp"
-        app:srcCompat="@drawable/ic_baseline_favorite_24" />
+        android:layout_marginBottom="26dp"
+        app:srcCompat="@drawable/ic_current_location" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
