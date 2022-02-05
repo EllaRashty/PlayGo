@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ParkActivity">
+    tools:context=".Park_Activity2">
 
     <ImageView
         android:id="@+id/main_IMG_background"
@@ -22,8 +22,7 @@
     <RelativeLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <ImageButton
             android:id="@+id/back_to_main"
@@ -66,55 +65,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="13dp">
-
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/park_LBL_address"
-                android:layout_marginStart="13dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="13dp"
-                android:layout_marginBottom="13dp">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/img_01"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/img_00"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_toLeftOf="@id/img_01"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/img_11"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_below="@id/img_01"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="15dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/img_10"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_below="@id/img_00"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_toLeftOf="@id/img_11"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
-            </RelativeLayout>
 
             <TextView
                 android:id="@+id/park_LBL_address"
@@ -265,7 +215,6 @@
                 android:text="go to"
                 android:textColor="@color/black" />
         </RelativeLayout>
-
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -305,23 +254,12 @@
                 android:id="@+id/register_BTM"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-
                 android:layout_marginBottom="5dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_register"
+                android:src="@drawable/ic_calander"
                 android:textColor="@color/black" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_RV_users"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/chat_BTM"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_weight="2"
-                tools:listitem="@layout/list_adapter" />
 
         </RelativeLayout>
 

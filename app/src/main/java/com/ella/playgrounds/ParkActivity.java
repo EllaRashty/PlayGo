@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +45,8 @@ public class ParkActivity extends BaseActivity {
     private TextView park_LBL_status_water;
     private ImageButton park_IBTN_chat;
     private ImageButton back;
-    private AppCompatImageView park_IMG;
+    private ImageButton reg;
+//    private ImageView park_IMG;
     private FirebaseDatabase database;
     private ArrayList<User> users;
     private UserAdapter userAdapter;
@@ -87,16 +89,12 @@ public class ParkActivity extends BaseActivity {
 
 
         park_BTN_navigation = findViewById(R.id.park_BTN_navigation);
-        park_LBL_status_address.setText(park.getAddress());
-        park_LBL_name.setText(park.getName());
-        park_LBL_status_water.setText(park.getWater());
-        park_LBL_status_shade.setText(park.getShade());
-        park_LBL_status_lights.setText(park.getLights());
-        park_LBL_status_benches.setText(park.getBenches());
+
 
         list_RV_users = findViewById(R.id.list_RV_users);
 
         park_IBTN_chat = findViewById(R.id.chat_BTM);
+        reg = findViewById(R.id.register_BTM);
         park_RB_rate = findViewById(R.id.park_RB_rate);
 
 
@@ -109,7 +107,15 @@ public class ParkActivity extends BaseActivity {
         rating = new Rating();
         currentUser = new User();
 
-        park_BTN_navigation = findViewById(R.id.park_BTN_navigation);
+//        park_LBL_status_address.setText("park.getAddress()");
+//        park_LBL_name.setText("park.getName()");
+//        park_LBL_status_water.setText("park.getWater()");
+//        park_LBL_status_shade.setText("park.getShade()");
+//        park_LBL_status_lights.setText("park.getLights()");
+//        park_LBL_status_benches.setText("park.getBenches()");
+
+
+//        park_BTN_navigation = findViewById(R.id.park_BTN_navigation);
         park_BTN_navigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,11 +130,11 @@ public class ParkActivity extends BaseActivity {
                 finish();
             }
         });
-        this.park_IMG = findViewById(R.id.img_00);
-        Glide
-                .with(this)
-                .load(park.getParkImage1())
-                .into(park_IMG);
+//        this.park_IMG = findViewById(R.id.img_00);
+//        Glide
+//                .with(this)
+//                .load(park.getParkImage1())
+//                .into(park_IMG);
 
         //open chat
         park_IBTN_chat.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +144,7 @@ public class ParkActivity extends BaseActivity {
             }
         });
 
-        park_MBTN_rate=findViewById(R.id.park_MBTN_rate);
+        park_MBTN_rate = findViewById(R.id.park_MBTN_rate);
         park_MBTN_rate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,6 +205,7 @@ public class ParkActivity extends BaseActivity {
             }
         });
     }
+
     private void getUserRating() {
         float rate = park_RB_rate.getRating();
         rating.setRating(rate);
@@ -245,12 +252,13 @@ public class ParkActivity extends BaseActivity {
         myRef = database.getReference("Rating").child(park.getPid());
         myRef.setValue(rating);
     }
+
     private void getUsersInParkList(FirebaseDatabase database) {
         database.getReference("Users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot key : snapshot.getChildren()) {
-                    try{
+                    try {
                         User user = key.getValue(User.class);
                         Distance distance_temp = new Distance();
                         initDistance(distance_temp, user);
@@ -270,9 +278,11 @@ public class ParkActivity extends BaseActivity {
                             setNewStatus("online", user);
                             updateUsersStatusList(user);
                         }
-                    }catch (Exception ex){}
+                    } catch (Exception ex) {
+                    }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -315,13 +325,14 @@ public class ParkActivity extends BaseActivity {
         dis.setUser_lat(user.getLastLat())
                 .setUser_lng(user.getLastLng());
     }
+
     private void updateUsersList(User user) {
         users.add(user);
         userAdapter.notifyItemChanged(users.size());
     }
 
     private int checkIfUserInPark(User checkUser) {
-        if (users!=null) {
+        if (users != null) {
             for (User user : users) {
                 if (user.getUid().equals(checkUser.getUid())) {
                     return users.indexOf(user);
@@ -345,6 +356,7 @@ public class ParkActivity extends BaseActivity {
         myIntent2.putExtra("PARK_PID", park.getPid());
         startActivity(myIntent2);
     }
+
     private void openProfileActivity(User user) {
         //todo open profile activity
         //todo send user to profile activity

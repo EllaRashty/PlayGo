@@ -33,7 +33,7 @@ public class ParksData {
         this.context = context;
 
         // init the all the parks
-//        createParks();
+        createParks();
     }
 
     public List<Park> getParksList() {

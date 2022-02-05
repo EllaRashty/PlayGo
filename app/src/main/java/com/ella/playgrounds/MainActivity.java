@@ -77,6 +77,7 @@ public class MainActivity extends BaseActivity {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             startLoginActivity();
         } else {
+            // TODO: 03/02/2022 del new user 
             currentUser = new User();
             addAndUpdateUser();
             initMap();
@@ -427,7 +428,6 @@ public class MainActivity extends BaseActivity {
         public void UploadParks(List<Park> parksList) {
             for (Park park : parksList) {
                 fragment_map.addParkMarkers(park.getLat(), park.getLng(), park.getPid());
-
             }
         }
     };
