@@ -35,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +61,7 @@ public class MainActivity extends BaseActivity {
     private Park currentPark;
     private Park park;
     private Distance distance;
+    private FloatingActionButton saved_park;
 
     private FloatingActionButton fab;
     int LOCATION_REQUEST_CODE = 1001;
@@ -97,6 +99,18 @@ public class MainActivity extends BaseActivity {
                 getLastLocation();
                 updateLocationUser();
                 fragment_map.zoomOnMarker(fragment_map.marker);
+            }
+        });
+
+        saved_park = findViewById(R.id.saved_park);
+        saved_park.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!currentUser.getFavoritePark().equals("")) {
+                    updateParkByPid(currentUser.getFavoritePark(), true);
+                } else {
+                    Toast.makeText(MainActivity.this, "You are not registered for playground", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -12,7 +12,6 @@
         android:theme="@style/Theme.Playgrounds.AppBarOverlay">
 
 
-
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -25,13 +24,32 @@
         android:layout_weight="4"
         android:background="#CE5CC5BB" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+    <LinearLayout
+        android:id="@+id/profile_LL_navi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="26dp"
-        app:srcCompat="@drawable/ic_current_location" />
+        android:orientation="vertical">
+
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/saved_park"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:backgroundTint="#F3FFB300"
+            android:layout_marginBottom="15dp"
+            app:srcCompat="@drawable/ic_save" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:backgroundTint="#F5E3EAEF"
+            app:srcCompat="@drawable/ic_current_location" />
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
