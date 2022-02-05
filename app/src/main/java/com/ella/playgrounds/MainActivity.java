@@ -391,8 +391,11 @@ public class MainActivity extends BaseActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_settings:
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+            case R.id.my_profile:
+                Toast.makeText(this, "My Profile", Toast.LENGTH_SHORT).show();
+                Intent myIntent = new Intent(MainActivity.this, ProfileActivity.class);
+                myIntent.putExtra("USER_PROFILE", currentUser);
+                startActivity(myIntent);
                 return true;
             case R.id.action_edit:
                 Toast.makeText(this, "Edit Profile", Toast.LENGTH_SHORT).show();

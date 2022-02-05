@@ -35,6 +35,13 @@ public class ParkActivity extends BaseActivity {
     private Park park, newActivityPark;
     public static final String PARK = "PARK";
     private User currentUser;
+    private ImageButton park_MBTN_favorite;
+
+    public final int FAVORITE = 1;
+    public final int UNFAVORITE = 0;
+    private int parkStatus;
+    public final String STAR_FILL = "ic_register";
+    public final String STAR_EMPTY = "ic_register_empty";
 
     private Button park_BTN_navigation;
     private TextView park_LBL_status_address;
@@ -68,11 +75,20 @@ public class ParkActivity extends BaseActivity {
 
         park = (Park) getIntent().getSerializableExtra(PARK);
 
+
         findView();
         init();
         getCurrentUserFromDatabase();
         setAdapter();
 
+        park_MBTN_favorite = findViewById(R.id.park_MBTN_favorite);
+        //make the park - favorite
+        park_MBTN_favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                favoritePark();
+            }
+        });
 
     }
 
@@ -107,12 +123,12 @@ public class ParkActivity extends BaseActivity {
         rating = new Rating();
         currentUser = new User();
 
-//        park_LBL_status_address.setText("park.getAddress()");
-//        park_LBL_name.setText("park.getName()");
-//        park_LBL_status_water.setText("park.getWater()");
-//        park_LBL_status_shade.setText("park.getShade()");
-//        park_LBL_status_lights.setText("park.getLights()");
-//        park_LBL_status_benches.setText("park.getBenches()");
+        park_LBL_name.setText(park.getName());
+        park_LBL_status_address.setText(park.getAddress());
+        park_LBL_status_water.setText(park.getWater());
+        park_LBL_status_shade.setText(park.getShade());
+        park_LBL_status_lights.setText(park.getLights());
+        park_LBL_status_benches.setText(park.getBenches());
 
 
 //        park_BTN_navigation = findViewById(R.id.park_BTN_navigation);
@@ -194,7 +210,7 @@ public class ParkActivity extends BaseActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 currentUser = snapshot.getValue(User.class);
                 baseUser = currentUser;
-//                checkIfParkIsFavorite();
+                checkIfParkIsFavorite();
                 getUsersInParkList(database);
                 getRatesFromDatabase();
             }
@@ -233,10 +249,8 @@ public class ParkActivity extends BaseActivity {
                     park_RB_rate.setRating((float) rating.getTotRating());
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
@@ -364,5 +378,50 @@ public class ParkActivity extends BaseActivity {
         Intent myIntent = new Intent(ParkActivity.this, ProfileActivity.class);
         myIntent.putExtra("USER_PROFILE", user);
         startActivity(myIntent);
+    }
+
+    private void favoritePark() {
+        //if user click to FAVORITE park
+        if (parkStatus == UNFAVORITE) {
+            // if user already has a favorite park
+            if (!currentUser.getFavoritePark().equals("")) {
+                Toast.makeText(this, "You already have a favorite park", Toast.LENGTH_SHORT).show();
+            } else {
+                //update favorite park
+                userPreference(park.getPid(), STAR_FILL, FAVORITE);
+                park.addUserToPark(currentUser.getUid());
+                Toast.makeText(this, "You have successfully added the park to favorites", Toast.LENGTH_SHORT).show();
+            }
+        }
+        //if user click to UNFAVORITE park
+        else {
+            userPreference("", STAR_EMPTY, UNFAVORITE);
+            park.removeUserFromPark(currentUser.getUid());
+        }
+        //update park and user in FirebaseDatabase
+        updateUserDatabase(currentUser);
+        updateParkDatabase();
+    }
+
+    //update user Preference for current park
+    private void userPreference(String pid, String img, int status) {
+        currentUser.setFavoritePark(pid);
+        park_MBTN_favorite.setImageResource(getImage(img));
+        parkStatus = status;
+    }
+
+    //get img resource
+    private int getImage(String imgName) {
+        return getResources().getIdentifier(imgName, "drawable", getPackageName());
+    }
+
+    private void checkIfParkIsFavorite() {
+        if (currentUser.getFavoritePark().equals(park.getPid())) {
+            int img = getResources().getIdentifier("ic_register", "drawable", getPackageName());
+            park_MBTN_favorite.setImageResource(img);
+            parkStatus = FAVORITE;
+        } else {
+            parkStatus = UNFAVORITE;
+        }
     }
 }

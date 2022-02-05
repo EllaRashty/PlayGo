@@ -275,7 +275,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/park_LAY_details"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="9dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="45dp"
         android:backgroundTint="#DCEFE8"
@@ -285,7 +285,8 @@
         <RelativeLayout
             android:id="@+id/users_RLV"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
 
             <ImageButton
@@ -293,7 +294,7 @@
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:background="@android:color/transparent"
@@ -302,14 +303,14 @@
                 android:textColor="@color/black" />
 
             <ImageButton
-                android:id="@+id/register_BTM"
+                android:id="@+id/park_MBTN_favorite"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="5dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_register"
+                android:src="@drawable/ic_register_empty"
                 android:textColor="@color/black" />
 
             <androidx.recyclerview.widget.RecyclerView
