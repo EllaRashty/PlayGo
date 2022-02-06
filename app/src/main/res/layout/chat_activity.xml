@@ -11,14 +11,14 @@
         android:id="@+id/main_IMG_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
+        android:scaleType="center"
         android:src="@drawable/img_park" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.9"
-        android:background="#E9E2F6" />
+        android:background="#B9EAE5D0" />
 
     <RelativeLayout
         android:id="@+id/chat_LL_menu"
@@ -30,10 +30,11 @@
 
         <ImageButton
             android:id="@+id/chat_BTN_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="13dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
             android:scaleType="fitCenter"
@@ -48,14 +49,6 @@
             android:layout_marginRight="20dp"
             android:layout_toEndOf="@id/chat_BTN_back"
             android:backgroundTint="@color/purple_700">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/chat_LBL_park_name"
-                android:src="@drawable/ic_human" />
 
             <TextView
                 android:id="@+id/chat_LBL_park_name"
@@ -97,7 +90,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="5dp"
         android:backgroundTint="@color/white"
         android:outlineAmbientShadowColor="@color/black"
         android:outlineSpotShadowColor="@color/black"
@@ -112,10 +105,12 @@
                 android:id="@+id/chat_BTN_send"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_weight="1"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_human" />
+                android:src="@drawable/ic_send" />
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -123,20 +118,19 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="15dp"
                 android:layout_centerInParent="true"
-                android:layout_toRightOf="@id/chat_BTN_send"
-                android:hint="Enter Massage..."
-                >
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="15dp"
+                android:layout_toLeftOf="@id/chat_BTN_send"
+                android:hint="Enter Massage...">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine"
-                    android:textColor="#EC09E0"
-                    android:maxLines="4" />
+                    android:maxLines="4"
+                    android:textColor="@color/purple_700" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

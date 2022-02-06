@@ -9,20 +9,19 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
@@ -34,9 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.InputStream;
 import java.util.Objects;
 
 public class EditProfileActivity extends BaseActivity {
@@ -52,6 +49,7 @@ public class EditProfileActivity extends BaseActivity {
     private MaterialButton save_MBTN;
     private MaterialButton cancel_MBTN;
     private TextInputLayout familyName;
+    private ImageView pick_img;
 
     private User currentUser;
     private ImageView pick;
@@ -167,13 +165,6 @@ public class EditProfileActivity extends BaseActivity {
 //        CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).start(this);
     }
 
-//    public void pickFromGallery() {
-//        Intent intent = new Intent(Intent.ACTION_PICK);
-//        intent.setType("image/*");
-//        getActivity().startActivityForResult(intent, 1);
-//    }
-
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void requestCameraPermission() {
         requestPermissions(cameraPermission,CAMERA_REQUEST);
@@ -248,6 +239,14 @@ public class EditProfileActivity extends BaseActivity {
             }
         });
 
+        cancel_MBTN = findViewById(R.id.cancel_MBTN);
+        cancel_MBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     public void clearFocus(EditText EditText) {
@@ -318,10 +317,12 @@ public class EditProfileActivity extends BaseActivity {
         } else if (currentUser.getChildGender().equals("GIRL")) {
             child_gender.check(R.id.child_girl);
         }
+        showImage();
+
     }
 
     private void findViews() {
-
+        pick_img = findViewById(R.id.pick_img);
         save_MBTN = findViewById(R.id.save_MBTN);
         cancel_MBTN = findViewById(R.id.cancel_MBTN);
         adult_gender = findViewById(R.id.edit_gender);
@@ -332,9 +333,14 @@ public class EditProfileActivity extends BaseActivity {
         childName = findViewById(R.id.edit_childName);
         child_about = findViewById(R.id.child_about);
         familyName = findViewById(R.id.edit_familyName);
-//        edit_IMG_add = findViewById(R.id.edit_IMG_add);
-//        edit_IMGG_add = findViewById(R.id.edit_IMGG_add);
+    }
 
+    private void showImage() {
+        if (currentUser.getImageUrl() != null) {
+            Glide.with(this)
+                    .load(currentUser.getImageUrl())
+                    .into(pick_img);
+        }
     }
 
     private void updateUserDatabase() {

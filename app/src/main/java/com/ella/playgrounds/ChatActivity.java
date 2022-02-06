@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +48,7 @@ public class ChatActivity extends BaseActivity {
     private TextView chat_LBL_park_name;
     private ImageButton chat_BTN_send;
     private ImageButton chat_BTN_back;
+    private ImageView main_IMG_background;
 
 
     @Override
@@ -182,8 +185,6 @@ public class ChatActivity extends BaseActivity {
                 finish();
             }
         });
-
-
     }
 
     private void findViews() {
@@ -192,7 +193,11 @@ public class ChatActivity extends BaseActivity {
         chat_BTN_send = findViewById(R.id.chat_BTN_send);
         chat_BTN_back = findViewById(R.id.chat_BTN_back);
         chat_LBL_park_name = findViewById(R.id.chat_LBL_park_name);
-
+        main_IMG_background = findViewById(R.id.main_IMG_background);
+        Glide
+                .with(this)
+                .load("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/kids-swinging-on-swing-set-royalty-free-image-1616099921.?crop=0.668xw:1.00xh;0.167xw,0&resize=640:*")
+                .into(main_IMG_background);
     }
 
 

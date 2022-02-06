@@ -13,8 +13,11 @@
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_chat.xml" value="0.1078125" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_child.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_current_location.xml" value="0.1234375" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_distance.xml" value="0.13385416666666666" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_family.xml" value="0.1234375" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_firstname.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_go.xml" value="0.13385416666666666" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_go2.xml" value="0.13385416666666666" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_launcher_background.xml" value="0.15989583333333332" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.15989583333333332" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_lets_go.xml" value="0.10364583333333334" />
@@ -22,6 +25,8 @@
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_register.xml" value="0.1078125" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_register_empty.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_save.xml" value="0.1640625" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_send.xml" value="0.13385416666666666" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_slide.xml" value="0.13385416666666666" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/ic_star.xml" value="0.10364583333333334" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/img_back.xml" value="0.1" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/drawable/imk_back.xml" value="0.15989583333333332" />
@@ -31,7 +36,7 @@
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_main.xml" value="0.13333333333333333" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_main2.xml" value="0.18206521739130435" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_maps.xml" value="0.13854166666666667" />
-        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_park.xml" value="0.22" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_park.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_park2.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/activity_profile.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/chat_activity.xml" value="0.14666666666666667" />
@@ -45,7 +50,7 @@
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/my_msg_chat.xml" value="0.10326086956521739" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/other_msg_chat.xml" value="0.22" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/layout/popup_layout.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/menu/menu_main.xml" value="0.12239583333333333" />
+        <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/menu/menu_main.xml" value="0.22" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.15989583333333332" />
         <entry key="..\:/Users/ellar/AndroidStudioProjects/Playgrounds/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>

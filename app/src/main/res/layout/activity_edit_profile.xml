@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:background="@drawable/ic_background_1">
 
         <TextView
@@ -18,20 +18,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:paddingRight="10dp"
             android:text="Edit Profile"
-            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
             android:textSize="30dp"
             android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/edit_IMG_constImg"
-            android:layout_width="45dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="9dp"
-            android:layout_toRightOf="@id/edit_IMG_parkName"
-            android:src="@drawable/ic_logo" />
     </RelativeLayout>
 
     <RelativeLayout

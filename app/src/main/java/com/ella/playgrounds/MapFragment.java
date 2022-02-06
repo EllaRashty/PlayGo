@@ -100,8 +100,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     }
 
                     prevMarker = marker;
-                    marker.setIcon(BitmapDescriptorFactory
-                            .defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+//                    marker.setIcon(BitmapDescriptorFactory
+//                            .defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+//                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.my_marker_icon));
                     zoomOnMarker(marker);
                     callBack_showPopUp.PopUpWindowOnMap((String) marker.getTag());
                     return true;

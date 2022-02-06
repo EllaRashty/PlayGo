@@ -61,7 +61,6 @@ public class ParkActivity extends BaseActivity {
     private DatabaseReference myRef;
     private RecyclerView list_RV_users;
     private FirebaseAuth firebaseAuth;
-    private MaterialButtonToggleGroup btn_online;
 
     private Rating rating;
     private RatingBar park_RB_rate;
@@ -182,20 +181,6 @@ public class ParkActivity extends BaseActivity {
                 }
             }
         });
-
-//        btn_online.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (btn_online.getCheckedButtonId() == R.id.btn_on) {
-//                    setNewStatus("online", currentUser);
-//                    Log.d("TAG","online");
-//                } else if (btn_online.getCheckedButtonId() == R.id.btn_off) {
-//                    setNewStatus("offline", currentUser);
-//                    Log.d("TAG","offline");
-//
-//                }
-//            }
-//        });
     }
 
     private void setAdapter() {

@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="10:00"
-        android:textColor="#F4511E"
+        android:textColor="@color/purple_700"
         android:textSize="10sp"
         android:layout_toLeftOf="@+id/me_CV_view"
         android:layout_alignBottom="@+id/me_CV_view" />

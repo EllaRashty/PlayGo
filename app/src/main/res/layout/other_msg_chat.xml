@@ -7,21 +7,21 @@
     android:layout_marginTop="16dp"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@id/other_LL_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@id/other_IMV_img">
+        android:layout_marginBottom="5dp"
+        >
 
 
         <TextView
             android:id="@+id/other_LBL_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="John Grady Cole"
+            android:text="John"
             android:textSize="16sp" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/other_IMV_img"
@@ -43,7 +43,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginBottom="20dp"
         android:layout_toRightOf="@+id/other_IMV_img"
-        app:cardBackgroundColor="@color/purple_200"
+        app:cardBackgroundColor="@color/light"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
@@ -79,7 +79,7 @@
         android:layout_alignBottom="@id/other_CV_view"
         android:layout_toRightOf="@id/other_CV_view"
         android:text="8:00"
-        android:textColor="#E633CF"
+        android:textColor="@color/purple_500"
         android:textSize="10sp" />
 
 
