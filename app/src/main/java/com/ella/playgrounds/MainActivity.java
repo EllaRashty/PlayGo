@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -36,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +53,6 @@ public class MainActivity extends BaseActivity {
     private DatabaseReference myRef;
     private double lat;
     private double lng;
-
     private TextView map_LBL_park_name;
     private TextView popup_LBL_online;
     private TextView popup_LBL_rating;
@@ -85,8 +86,6 @@ public class MainActivity extends BaseActivity {
             initMap();
             findView();
             database = FirebaseDatabase.getInstance();
-
-
         }
 
     }
@@ -113,6 +112,8 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+
+
     }
 
 
@@ -139,7 +140,6 @@ public class MainActivity extends BaseActivity {
         fragment_map = new MapFragment();
         fragment_map.setCallBack_location(callBack_location);
         fragment_map.setCallBack_showPopUp(callBack_showPopUp);
-
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_layout, fragment_map)
@@ -213,7 +213,6 @@ public class MainActivity extends BaseActivity {
             if (currentUser.getUid() != null && distance.checkIfDistanceChanged(lat, lng)) {
                 updateLocationUser();
             }
-//            fragment_map.showMarker(lat, lng);
         }
     };
 
@@ -229,14 +228,12 @@ public class MainActivity extends BaseActivity {
                     addNewUser();
                     return;
                 }
-
                 currentUser = dataSnapshot.getValue(User.class);
                 baseUser = currentUser;
                 if (callBack_location != null) {
                     callBack_location.updateLocation();
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -254,7 +251,6 @@ public class MainActivity extends BaseActivity {
                 int numOfOnlineUsers = 0;
                 for (DataSnapshot key : dataSnapshot.getChildren()) {
                     try {
-
                         User user = key.getValue(User.class);
                         if (currentPark.getUsersUidList().contains(user.getUid()) && user.getStatus().equals("online")) {
                             numOfOnlineUsers++;
@@ -264,12 +260,9 @@ public class MainActivity extends BaseActivity {
                 }
                 popup_LBL_online.setText("" + numOfOnlineUsers);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
-
         });
     }
 

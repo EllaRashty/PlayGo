@@ -16,7 +16,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.9"
-        android:background="@drawable/ic_launcher_background" />
+        android:background="@drawable/ic_background_1" />
+
+    <ImageButton
+        android:id="@+id/back_to_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="5dp"
+        android:backgroundTint="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_back_arrow" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_IMG_user"
@@ -50,7 +60,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
-        android:backgroundTint="#DEF3EB"
+        android:backgroundTint="@color/light"
         app:cardCornerRadius="20dp">
 
         <RelativeLayout
@@ -62,11 +72,11 @@
                 android:id="@+id/family_name_LBL"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="110dp"
                 android:layout_marginBottom="10dp"
                 android:text="Family name"
                 android:textColor="@color/black"
                 android:textSize="18dp"
-                android:layout_marginRight="110dp"
 
                 android:textStyle="bold" />
 
@@ -138,7 +148,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="25dp"
-        android:backgroundTint="#DEF3EB"
+        android:backgroundTint="@color/light"
         app:cardCornerRadius="20dp">
 
         <RelativeLayout

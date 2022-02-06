@@ -10,8 +10,8 @@
     <RelativeLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#AAF1D9">
+        android:layout_height="50dp"
+        android:background="@drawable/ic_background_1">
 
         <TextView
             android:id="@+id/edit_IMG_parkName"

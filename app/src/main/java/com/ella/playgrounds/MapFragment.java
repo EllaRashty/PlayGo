@@ -1,21 +1,14 @@
 package com.ella.playgrounds;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -43,6 +36,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void setCallBack_showPopUp(CallBack_showPopUp callBack_showPopUp) {
         this.callBack_showPopUp = callBack_showPopUp;
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -90,26 +85,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-//            LatLng latLng = new LatLng(27.1751,78.0421);
-//            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("Taj").snippet("wonder");
-//            mMap.addMarker(markerOptions);
-//            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng,16);
-//            mMap.animateCamera(cameraUpdate);
         showParkDetails();
-
-//                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//                    @Override
-//                    public void onMapClick(@NonNull LatLng latLng) {
-//                        MarkerOptions markerOptions = new MarkerOptions();
-//                        markerOptions.position(latLng);
-//                        markerOptions.title("Taj");
-//                        googleMap.clear();
-//                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,16));
-//
-//                        googleMap.addMarker(markerOptions);
-//                    }
-//                });
-
     }
 
     public void showParkDetails() {

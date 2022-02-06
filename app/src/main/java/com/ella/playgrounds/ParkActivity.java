@@ -43,7 +43,7 @@ public class ParkActivity extends BaseActivity {
     public final String STAR_FILL = "ic_register";
     public final String STAR_EMPTY = "ic_register_empty";
 
-    private Button park_BTN_navigation;
+    private ImageButton park_BTN_navigation;
     private TextView park_LBL_status_address;
     private TextView park_LBL_name;
     private TextView park_LBL_status_shade;
@@ -53,7 +53,8 @@ public class ParkActivity extends BaseActivity {
     private ImageButton park_IBTN_chat;
     private ImageButton back;
     private ImageButton reg;
-//    private ImageView park_IMG;
+    private ImageView park_IMG;
+    private ImageView main_IMG_background;
     private FirebaseDatabase database;
     private ArrayList<User> users;
     private UserAdapter userAdapter;
@@ -146,11 +147,21 @@ public class ParkActivity extends BaseActivity {
                 finish();
             }
         });
-//        this.park_IMG = findViewById(R.id.img_00);
-//        Glide
-//                .with(this)
-//                .load(park.getParkImage1())
-//                .into(park_IMG);
+
+        this.park_IMG = findViewById(R.id.img_00);
+        this.main_IMG_background=findViewById(R.id.main_IMG_background);
+        Glide
+                .with(this)
+                .load(park.getParkImage1())
+                .into(park_IMG);
+        Glide
+                .with(this)
+                .load("https://indiagardening.com/wp-content/uploads/2019/12/1Grass.jpg")
+                .into(main_IMG_background);
+
+
+
+
 
         //open chat
         park_IBTN_chat.setOnClickListener(new View.OnClickListener() {

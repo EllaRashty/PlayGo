@@ -5,14 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp"
-    android:layout_marginBottom="50dp"
+    android:layout_marginBottom="5dp"
     android:elevation="5dp"
-    app:cardBackgroundColor="#EEB0FBFB"
     app:cardCornerRadius="50dp"
     app:cardElevation="5dp"
     tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/popup_IMG_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_background" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.9"
+        android:background="#C6C3E2EC" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +40,7 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/img_park" />
+                android:src="@drawable/slide" />
 
             <TextView
                 android:id="@+id/map_LBL_park_name"
@@ -55,7 +65,7 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_baseline_favorite_24" />
+                    android:src="@drawable/ic_star" />
 
                 <TextView
                     android:id="@+id/popup_LBL_rating"
@@ -136,7 +146,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_human" />
+                android:src="@drawable/ic_distance" />
 
             <TextView
                 android:id="@+id/popup_LBL_distance"

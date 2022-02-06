@@ -32,7 +32,7 @@
             android:layout_marginStart="5dp"
             android:backgroundTint="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:src="@drawable/back" />
+            android:src="@drawable/ic_back_arrow" />
 
         <TextView
             android:id="@+id/park_LBL_name"

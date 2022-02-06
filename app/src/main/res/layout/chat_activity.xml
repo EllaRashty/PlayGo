@@ -37,7 +37,7 @@
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:src="@drawable/back" />
+            android:src="@drawable/ic_back_arrow" />
 
         <RelativeLayout
             android:id="@+id/title"
