@@ -23,4 +23,10 @@
 
     <string name="family_name">\t Family Name</string>
     <string name="first_name">\t First Name</string>
+
+
+    <string name="register">ic_register</string>
+    <string name="unregister">ic_register_empty</string>
+
+
 </resources>

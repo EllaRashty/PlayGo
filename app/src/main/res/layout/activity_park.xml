@@ -241,7 +241,7 @@
                 android:textSize="18dp" />
 
             <RatingBar
-                android:id="@+id/park_RB_rate"
+                android:id="@+id/rate_RB"
                 style="@style/Widget.AppCompat.RatingBar.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -259,7 +259,7 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/park_RB_rate"
+                android:layout_below="@+id/rate_RB"
                 android:gravity="left"
                 android:text="Rate!"
                 android:textColor="#FFB300"
@@ -269,7 +269,7 @@
                 android:id="@+id/park_BTN_navigation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/park_RB_rate"
+                android:layout_below="@id/rate_RB"
                 android:layout_alignParentRight="true"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
@@ -312,7 +312,7 @@
                 android:textColor="@color/black" />
 
             <ImageButton
-                android:id="@+id/park_MBTN_favorite"
+                android:id="@+id/register_BTN"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"

@@ -114,7 +114,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void zoomOnMarker(Marker marker) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13f));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15f));
     }
 
 //    private LocationCallback locationCallback = new LocationCallback() {

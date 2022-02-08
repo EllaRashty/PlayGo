@@ -1,16 +1,13 @@
 package com.ella.playgrounds;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -19,7 +16,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,100 +24,34 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class ParkActivity extends BaseActivity {
-    private Park park, newActivityPark;
-    public static final String PARK = "PARK";
-    private User currentUser;
-    private ImageButton park_MBTN_favorite;
-
-    public final int FAVORITE = 1;
-    public final int UNFAVORITE = 0;
-    private int parkStatus;
-    public final String STAR_FILL = "ic_register";
-    public final String STAR_EMPTY = "ic_register_empty";
-
-    private ImageButton park_BTN_navigation;
-    private TextView park_LBL_status_address;
-    private TextView park_LBL_name;
-    private TextView park_LBL_status_shade;
-    private TextView park_LBL_status_lights;
-    private TextView park_LBL_status_benches;
-    private TextView park_LBL_status_water;
-    private ImageButton park_IBTN_chat;
-    private ImageButton back;
-    private ImageButton reg;
-    private ImageView park_IMG;
-    private ImageView main_IMG_background;
-    private FirebaseDatabase database;
+    private Park park;
+    private boolean parkStatus;
     private ArrayList<User> users;
     private UserAdapter userAdapter;
     private DatabaseReference myRef;
-    private RecyclerView list_RV_users;
-    private FirebaseAuth firebaseAuth;
-
     private Rating rating;
-    private RatingBar park_RB_rate;
-    private MaterialButton park_MBTN_rate;
-
+    private RatingBar rate_RB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_park);
         Objects.requireNonNull(getSupportActionBar()).hide();
-
-        park = (Park) getIntent().getSerializableExtra(PARK);
-
-
-        findView();
         init();
-        getCurrentUserFromDatabase();
-        setAdapter();
-
-        park_MBTN_favorite = findViewById(R.id.park_MBTN_favorite);
-        //make the park - favorite
-        park_MBTN_favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                favoritePark();
-            }
-        });
-
+        fileText();
+        operations();
     }
 
-    private void findView() {
-
-        park_LBL_status_address = findViewById(R.id.park_LBL_status_address);
-        park_LBL_status_shade = findViewById(R.id.park_LBL_status_shade);
-        park_LBL_status_lights = findViewById(R.id.park_LBL_status_lights);
-        park_LBL_status_benches = findViewById(R.id.park_LBL_status_benches);
-        park_LBL_status_water = findViewById(R.id.park_LBL_status_water);
-        park_LBL_name = findViewById(R.id.park_LBL_name);
-
-//        btn_online = findViewById(R.id.edit_online);
-
-
-        park_BTN_navigation = findViewById(R.id.park_BTN_navigation);
-
-
-        list_RV_users = findViewById(R.id.list_RV_users);
-
-        park_IBTN_chat = findViewById(R.id.chat_BTM);
-        reg = findViewById(R.id.register_BTM);
-        park_RB_rate = findViewById(R.id.park_RB_rate);
-
-
-    }
-
-    private void init() {
-        firebaseAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        users = new ArrayList<>();
-        rating = new Rating();
-        currentUser = new User();
+    private void fileText() {
+        TextView park_LBL_status_address = findViewById(R.id.park_LBL_status_address);
+        TextView park_LBL_status_shade = findViewById(R.id.park_LBL_status_shade);
+        TextView park_LBL_status_lights = findViewById(R.id.park_LBL_status_lights);
+        TextView park_LBL_status_benches = findViewById(R.id.park_LBL_status_benches);
+        TextView park_LBL_status_water = findViewById(R.id.park_LBL_status_water);
+        TextView park_LBL_name = findViewById(R.id.park_LBL_name);
 
         park_LBL_name.setText(park.getName());
         park_LBL_status_address.setText(park.getAddress());
@@ -129,9 +59,10 @@ public class ParkActivity extends BaseActivity {
         park_LBL_status_shade.setText(park.getShade());
         park_LBL_status_lights.setText(park.getLights());
         park_LBL_status_benches.setText(park.getBenches());
+    }
 
-
-//        park_BTN_navigation = findViewById(R.id.park_BTN_navigation);
+    private void operations() {
+        ImageButton park_BTN_navigation = findViewById(R.id.park_BTN_navigation);
         park_BTN_navigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,30 +70,8 @@ public class ParkActivity extends BaseActivity {
             }
         });
 
-        back = findViewById(R.id.back_to_main);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        this.park_IMG = findViewById(R.id.img_00);
-        this.main_IMG_background=findViewById(R.id.main_IMG_background);
-        Glide
-                .with(this)
-                .load(park.getParkImage1())
-                .into(park_IMG);
-        Glide
-                .with(this)
-                .load("https://indiagardening.com/wp-content/uploads/2019/12/1Grass.jpg")
-                .into(main_IMG_background);
-
-
-
-
-
         //open chat
+        ImageButton park_IBTN_chat = findViewById(R.id.chat_BTM);
         park_IBTN_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,24 +79,77 @@ public class ParkActivity extends BaseActivity {
             }
         });
 
-        park_MBTN_rate = findViewById(R.id.park_MBTN_rate);
+        ImageButton back = findViewById(R.id.back_to_main);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        MaterialButton park_MBTN_rate = findViewById(R.id.park_MBTN_rate);
         park_MBTN_rate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!rating.checkIfUserExist(currentUser.getUid())) {
+                if (!rating.checkIfUserExist(baseUser.getUid())) {
                     getUserRating();
                 } else {
                     Toast.makeText(ParkActivity.this, "You have already rated the park !", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        // register/unregister to park
+        ImageButton register = findViewById(R.id.register_BTN);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerToPark(register);
+            }
+        });
+
+        getCurrentUserFromDatabase(register);
+    }
+
+    private void init() {
+        park = (Park) getIntent().getSerializableExtra("PARK");
+        users = new ArrayList<>();
+        rating = new Rating();
+        rate_RB = findViewById(R.id.rate_RB);
+        displayImages();
+        setAdapter();
+    }
+
+    private void displayImages() {
+        ImageView park_IMG1, park_IMG2, park_IMG3, park_IMG4, main_IMG_background;
+        park_IMG1 = findViewById(R.id.img_00);
+        uploadImage(park.getParkImage1(), park_IMG1);
+
+        park_IMG2 = findViewById(R.id.img_01);
+        uploadImage(park.getParkImage2(), park_IMG2);
+
+        park_IMG3 = findViewById(R.id.img_10);
+        uploadImage(park.getParkImage3(), park_IMG3);
+
+        park_IMG4 = findViewById(R.id.img_11);
+        uploadImage(park.getParkImage4(), park_IMG4);
+
+        main_IMG_background = findViewById(R.id.main_IMG_background);
+        uploadImage("https://indiagardening.com/wp-content/uploads/2019/12/1Grass.jpg", main_IMG_background);
+    }
+
+    private void uploadImage(String link, ImageView view) {
+        Glide
+                .with(this)
+                .load(link)
+                .into(view);
     }
 
     private void setAdapter() {
+        RecyclerView list_RV_users = findViewById(R.id.list_RV_users);
         list_RV_users.setLayoutManager(new LinearLayoutManager(this));
         userAdapter = new UserAdapter(this, users);
         list_RV_users.setAdapter(userAdapter);
-
         userAdapter.setClickListener(new UserAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -196,44 +158,37 @@ public class ParkActivity extends BaseActivity {
         });
     }
 
-
-    private void getCurrentUserFromDatabase() {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
+    private void getCurrentUserFromDatabase(ImageButton register) {
+        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         database.getReference("Users").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                currentUser = snapshot.getValue(User.class);
-                baseUser = currentUser;
-                checkIfParkIsFavorite();
+                baseUser = snapshot.getValue(User.class);
+                checkIfParkIsRegister(register);
                 getUsersInParkList(database);
                 getRatesFromDatabase();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
 
     private void getUserRating() {
-        float rate = park_RB_rate.getRating();
+        float rate = rate_RB.getRating();
         rating.setRating(rate);
         rating.calcRating();
         park.setRating(rating.getTotRating());
-        rating.addUserToRatingList(currentUser.getUid());
-        park_RB_rate.setRating(rating.getTotRating());
-        park_RB_rate.setIsIndicator(true);
-
+        rating.addUserToRatingList(baseUser.getUid());
+        rate_RB.setRating(rating.getTotRating());
+        rate_RB.setIsIndicator(true);
         Toast.makeText(ParkActivity.this, "Thank`s for rating !", Toast.LENGTH_SHORT).show();
         updateRateDatabase();
         updateParkDatabase();
     }
 
     private void getRatesFromDatabase() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.getReference("Rating").child(park.getPid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -242,9 +197,10 @@ public class ParkActivity extends BaseActivity {
                 } else {
                     rating = snapshot.getValue(Rating.class);
                     checkRate();
-                    park_RB_rate.setRating((float) rating.getTotRating());
+                    rate_RB.setRating((float) rating.getTotRating());
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -252,10 +208,9 @@ public class ParkActivity extends BaseActivity {
     }
 
     private void checkRate() {
-        String uid = currentUser.getUid();
-        if (rating.checkIfUserExist(uid)) {
-            park_RB_rate.setIsIndicator(true);
-        }
+        String uid = baseUser.getUid();
+        if (rating.checkIfUserExist(uid))
+            rate_RB.setIsIndicator(true);
     }
 
     private void updateRateDatabase() {
@@ -271,15 +226,14 @@ public class ParkActivity extends BaseActivity {
                     try {
                         User user = key.getValue(User.class);
                         Distance distance_temp = new Distance();
+                        assert user != null;
                         initDistance(distance_temp, user);
-                        //if current park is user`s favorite park - add user to list
-                        if (user.getFavoritePark().equals(park.getPid()) && checkIfUserInPark(user) == -1) {
+                        //if current park is user`s park - add to users list
+                        if (user.getRegisterPark().equals(park.getPid()) && checkIfUserInPark(user) == -1)
                             updateUsersList(user);
-                        }
-                        //if the user removed a "favorite " from the park
-                        else if (!user.getFavoritePark().equals(park.getPid()) && checkIfUserInPark(user) != -1) {
+                            //if the user unregister from the park
+                        else if (!user.getRegisterPark().equals(park.getPid()) && checkIfUserInPark(user) != -1)
                             removeUserFromList(user);
-                        }
                         //check if user is not at the park
                         if (checkIfUserInPark(user) != -1 && !check_distance(distance_temp) && user.getStatus().equals("online")) {
                             setNewStatus("offline", user);
@@ -288,7 +242,7 @@ public class ParkActivity extends BaseActivity {
                             setNewStatus("online", user);
                             updateUsersStatusList(user);
                         }
-                    } catch (Exception ex) {
+                    } catch (Exception ignored) {
                     }
                 }
             }
@@ -331,8 +285,9 @@ public class ParkActivity extends BaseActivity {
         userAdapter.notifyItemRangeChanged(id, users.size());
     }
 
-    private void initDistance(Distance dis, User user) {
-        dis.setUser_lat(user.getLastLat())
+    private void initDistance(Distance distance, User user) {
+        distance
+                .setUser_lat(user.getLastLat())
                 .setUser_lng(user.getLastLng());
     }
 
@@ -344,21 +299,18 @@ public class ParkActivity extends BaseActivity {
     private int checkIfUserInPark(User checkUser) {
         if (users != null) {
             for (User user : users) {
-                if (user.getUid().equals(checkUser.getUid())) {
+                if (user.getUid().equals(checkUser.getUid()))
                     return users.indexOf(user);
-                }
             }
         }
         return -1;
     }
 
     private void openGoogleMap() {
-        // Creates an Intent that will load a map of San Francisco
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + park.getLat() + "," + park.getLng() + "&mode=w");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
-
     }
 
     private void openChatActivity() {
@@ -368,56 +320,52 @@ public class ParkActivity extends BaseActivity {
     }
 
     private void openProfileActivity(User user) {
-        //todo open profile activity
-        //todo send user to profile activity
-        //todo create profile activity
         Intent myIntent = new Intent(ParkActivity.this, ProfileActivity.class);
         myIntent.putExtra("USER_PROFILE", user);
         startActivity(myIntent);
     }
 
-    private void favoritePark() {
-        //if user click to FAVORITE park
-        if (parkStatus == UNFAVORITE) {
-            // if user already has a favorite park
-            if (!currentUser.getFavoritePark().equals("")) {
-                Toast.makeText(this, "You already have a favorite park", Toast.LENGTH_SHORT).show();
+    private void registerToPark(ImageButton register) {
+        //if user click on REGISTER
+        if (!parkStatus) {
+            // if user already registered to park
+            if (!baseUser.getRegisterPark().equals("")) {
+                Toast.makeText(this, "You already registered to park", Toast.LENGTH_SHORT).show();
             } else {
-                //update favorite park
-                userPreference(park.getPid(), STAR_FILL, FAVORITE);
-                park.addUserToPark(currentUser.getUid());
-                Toast.makeText(this, "You have successfully added the park to favorites", Toast.LENGTH_SHORT).show();
+                //update register park
+                userPreference(park.getPid(), this.getString(R.string.register), !parkStatus, register);
+                park.addUserToPark(baseUser.getUid());
+                Toast.makeText(this, "You have successfully registered to park", Toast.LENGTH_SHORT).show();
             }
         }
-        //if user click to UNFAVORITE park
+        //if user click to UNREGISTER park
         else {
-            userPreference("", STAR_EMPTY, UNFAVORITE);
-            park.removeUserFromPark(currentUser.getUid());
+            userPreference("", this.getString(R.string.unregister), !parkStatus, register);
+            park.removeUserFromPark(baseUser.getUid());
         }
         //update park and user in FirebaseDatabase
-        updateUserDatabase(currentUser);
+        updateUserDatabase(baseUser);
         updateParkDatabase();
     }
 
     //update user Preference for current park
-    private void userPreference(String pid, String img, int status) {
-        currentUser.setFavoritePark(pid);
-        park_MBTN_favorite.setImageResource(getImage(img));
+    private void userPreference(String pid, String img, boolean status, ImageButton register) {
+        baseUser.setRegisterPark(pid);
+        register.setImageResource(getUserImage(img));
         parkStatus = status;
     }
 
     //get img resource
-    private int getImage(String imgName) {
+    private int getUserImage(String imgName) {
         return getResources().getIdentifier(imgName, "drawable", getPackageName());
     }
 
-    private void checkIfParkIsFavorite() {
-        if (currentUser.getFavoritePark().equals(park.getPid())) {
+    private void checkIfParkIsRegister(ImageButton register) {
+        if (baseUser.getRegisterPark().equals(park.getPid())) {
             int img = getResources().getIdentifier("ic_register", "drawable", getPackageName());
-            park_MBTN_favorite.setImageResource(img);
-            parkStatus = FAVORITE;
-        } else {
-            parkStatus = UNFAVORITE;
-        }
+            register.setImageResource(img);
+            parkStatus = true;
+        } else
+            parkStatus = false;
     }
 }

@@ -17,6 +17,9 @@ public class Park implements Serializable {
     private float rating;
     private List<String> usersUidList;
     private String parkImage1; // link
+    private String parkImage2; // link
+    private String parkImage3; // link
+    private String parkImage4; // link
 
     private String water = "";
     private String shade = "";
@@ -91,6 +94,33 @@ public class Park implements Serializable {
 
     public Park setParkImage1(String parkImage1) {
         this.parkImage1 = parkImage1;
+        return this;
+    }
+
+    public String getParkImage2() {
+        return parkImage2;
+    }
+
+    public Park setParkImage2(String parkImage2) {
+        this.parkImage2 = parkImage2;
+        return this;
+    }
+
+    public String getParkImage3() {
+        return parkImage3;
+    }
+
+    public Park setParkImage3(String parkImage3) {
+        this.parkImage3 = parkImage3;
+        return this;
+    }
+
+    public String getParkImage4() {
+        return parkImage4;
+    }
+
+    public Park setParkImage4(String parkImage4) {
+        this.parkImage4 = parkImage4;
         return this;
     }
 

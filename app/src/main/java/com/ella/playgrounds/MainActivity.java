@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
-import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -36,9 +35,6 @@ import com.google.firebase.database.ValueEventListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -105,8 +101,8 @@ public class MainActivity extends BaseActivity {
         saved_park.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!currentUser.getFavoritePark().equals("")) {
-                    updateParkByPid(currentUser.getFavoritePark(), true);
+                if (!currentUser.getRegisterPark().equals("")) {
+                    updateParkByPid(currentUser.getRegisterPark(), true);
                 } else {
                     Toast.makeText(MainActivity.this, "You are not registered for playground", Toast.LENGTH_SHORT).show();
                 }
@@ -451,6 +447,7 @@ public class MainActivity extends BaseActivity {
 
     private void readParksAndShowOnMap() {
         parksData = new ParksData(this);
+//        parksData = new ParksData();
         parksData.getParks();
         parksData.setCallBack_UploadParks(callBack_uploadParks);
     }

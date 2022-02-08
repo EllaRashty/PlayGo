@@ -116,6 +116,7 @@ public class EditProfileActivity extends BaseActivity {
 //                    e.printStackTrace();
 //                }
                 Picasso.with(this).load(resultUri).into(pick);
+//                currentUser.setImageUrl(resultUri.toString());
             }
 
         }

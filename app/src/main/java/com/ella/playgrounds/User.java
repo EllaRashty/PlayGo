@@ -8,13 +8,10 @@ public class User implements Serializable {
     private  String adultName = "";
     private  String familyName = "";
     private  String childName = "";
-    private  String phoneNumber = "";
     private  String status = "";
-    private  String favoritePark = "";
-//    private double lastLng;
+    private  String registerPark = "";
     private double lastLng=0.0;
     private double lastLat=0.0;
-//    private double lastLat;
     private String adultTitle = "";
     private String adultGender = "";
     private String childGender = "";
@@ -22,10 +19,7 @@ public class User implements Serializable {
     private String about="";
     private String imageUrl;
 
-
-
     public User() {
-
     }
 
     public String getUid() {
@@ -46,21 +40,12 @@ public class User implements Serializable {
         return this;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getRegisterPark() {
+        return registerPark;
     }
 
-    public User setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-        return this;
-    }
-
-    public String getFavoritePark() {
-        return favoritePark;
-    }
-
-    public User setFavoritePark(String favoritePark) {
-        this.favoritePark = favoritePark;
+    public User setRegisterPark(String favoritePark) {
+        this.registerPark = favoritePark;
         return this;
     }
 
