@@ -16,7 +16,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/list_IMG_user"
+            android:id="@+id/user_IMG"
             android:layout_width="45dp"
             android:layout_height="42dp"
             android:layout_alignParentLeft="true"
@@ -28,17 +28,17 @@
             app:shapeAppearanceOverlay="@style/circleImageView" />
 
         <TextView
-            android:id="@+id/list_LBL_name"
+            android:id="@+id/user_name_LBL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/list_IMG_user"
+            android:layout_toRightOf="@id/user_IMG"
             android:text="Contact name"
             android:textSize="20dp" />
 
         <ImageView
-            android:id="@+id/list_IMG_status"
+            android:id="@+id/user_status"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginRight="10dp"

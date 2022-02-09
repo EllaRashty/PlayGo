@@ -15,19 +15,15 @@ public class Rating {
     private int totRating = 0;
     private List<String> userId;
 
-
     public Rating() {
         userId = new ArrayList<>();
     }
 
-
     public void calcRating() {
-        int rates = star_1 * 1 + star_2 * 2 + star_3 * 3 + star_4 * 4 + star_5 * 5;
-        if (totNumOfRates != 0) {
+        int rates = star_1 + star_2 * 2 + star_3 * 3 + star_4 * 4 + star_5 * 5;
+        if (totNumOfRates != 0)
             totRating = rates / totNumOfRates;
-        }
     }
-
 
     public String getPid() {
         return pid;
@@ -102,24 +98,24 @@ public class Rating {
     }
 
     public void setRating(float rating) {
-        if (rating == 1) {
-            star_1++;
+        switch ((int) rating) {
+            case 1:
+                star_1++;
+                break;
+            case 2:
+                star_2++;
+                break;
+            case 3:
+                star_3++;
+                break;
+            case 4:
+                star_4++;
+                break;
+            case 5:
+                star_5++;
+                break;
         }
-        if (rating == 2) {
-            star_2++;
-        }
-        if (rating == 3) {
-            star_3++;
-        }
-        if (rating == 4) {
-            star_4++;
-        }
-        if (rating == 5) {
-            star_5++;
-        }
-
         totNumOfRates++;
-
     }
 
     public List<String> getUserId() {
@@ -132,15 +128,11 @@ public class Rating {
     }
 
     public void addUserToRatingList(String uid) {
-        if (!userId.contains(uid)) {
+        if (!userId.contains(uid))
             userId.add(uid);
-        }
     }
 
     public boolean checkIfUserExist(String uid) {
-        if (!userId.isEmpty() && userId.contains(uid)) {
-            return true;
-        }
-        return false;
+        return !userId.isEmpty() && userId.contains(uid);
     }
 }

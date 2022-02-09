@@ -8,7 +8,7 @@
     tools:context=".ChatActivity">
 
     <ImageView
-        android:id="@+id/main_IMG_background"
+        android:id="@+id/chat_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="center"
@@ -29,7 +29,7 @@
 
 
         <ImageButton
-            android:id="@+id/chat_BTN_back"
+            android:id="@+id/chat_back_BTN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -47,7 +47,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="20dp"
-            android:layout_toEndOf="@id/chat_BTN_back"
+            android:layout_toEndOf="@id/chat_back_BTN"
             android:backgroundTint="@color/purple_700">
 
             <TextView
@@ -74,7 +74,7 @@
         android:backgroundTint="@color/purple_700">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chat_RCV_recyclerview"
+            android:id="@+id/chat_RV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
@@ -102,7 +102,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/chat_BTN_send"
+                android:id="@+id/send_BTN"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_alignParentRight="true"
@@ -114,14 +114,14 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/chat_EDT_massage"
+                android:id="@+id/chat_edit_massage"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="15dp"
-                android:layout_toLeftOf="@id/chat_BTN_send"
+                android:layout_toLeftOf="@id/send_BTN"
                 android:hint="Enter Massage...">
 
                 <com.google.android.material.textfield.TextInputEditText

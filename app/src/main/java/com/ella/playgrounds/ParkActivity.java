@@ -134,7 +134,7 @@ public class ParkActivity extends BaseActivity {
         park_IMG4 = findViewById(R.id.img_11);
         uploadImage(park.getParkImage4(), park_IMG4);
 
-        main_IMG_background = findViewById(R.id.main_IMG_background);
+        main_IMG_background = findViewById(R.id.chat_background);
         uploadImage("https://indiagardening.com/wp-content/uploads/2019/12/1Grass.jpg", main_IMG_background);
     }
 
@@ -231,15 +231,15 @@ public class ParkActivity extends BaseActivity {
                         //if current park is user`s park - add to users list
                         if (user.getRegisterPark().equals(park.getPid()) && checkIfUserInPark(user) == -1)
                             updateUsersList(user);
-                            //if the user unregister from the park
+                        //if the user unregister from the park
                         else if (!user.getRegisterPark().equals(park.getPid()) && checkIfUserInPark(user) != -1)
                             removeUserFromList(user);
                         //check if user is not at the park
                         if (checkIfUserInPark(user) != -1 && !check_distance(distance_temp) && user.getStatus().equals("online")) {
-                            setNewStatus("offline", user);
+                            setNewStatus(getString(R.string.offline), user);
                             updateUsersStatusList(user);
                         } else if (checkIfUserInPark(user) != -1 && check_distance(distance_temp) && user.getStatus().equals("offline")) {
-                            setNewStatus("online", user);
+                            setNewStatus(getString(R.string.online), user);
                             updateUsersStatusList(user);
                         }
                     } catch (Exception ignored) {
@@ -261,6 +261,7 @@ public class ParkActivity extends BaseActivity {
     private void updateUsersStatusList(User user) {
         int id = checkIfUserInPark(user);
         users.set(id, user);
+        park.addUserToPark(user.getUid());
         userAdapter.notifyItemChanged(id);
     }
 
@@ -299,8 +300,10 @@ public class ParkActivity extends BaseActivity {
     private int checkIfUserInPark(User checkUser) {
         if (users != null) {
             for (User user : users) {
-                if (user.getUid().equals(checkUser.getUid()))
-                    return users.indexOf(user);
+                if (user.getUid().equals(checkUser.getUid())){
+                    park.addUserToPark(user.getUid());
+                return users.indexOf(user);
+            }
             }
         }
         return -1;
@@ -357,12 +360,12 @@ public class ParkActivity extends BaseActivity {
 
     //get img resource
     private int getUserImage(String imgName) {
-        return getResources().getIdentifier(imgName, "drawable", getPackageName());
+        return getResources().getIdentifier(imgName, getString(R.string.drawable), getPackageName());
     }
 
     private void checkIfParkIsRegister(ImageButton register) {
         if (baseUser.getRegisterPark().equals(park.getPid())) {
-            int img = getResources().getIdentifier("ic_register", "drawable", getPackageName());
+            int img = getResources().getIdentifier(getString(R.string.register),getString(R.string.drawable), getPackageName());
             register.setImageResource(img);
             parkStatus = true;
         } else

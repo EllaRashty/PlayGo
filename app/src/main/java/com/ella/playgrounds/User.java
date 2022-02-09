@@ -7,17 +7,17 @@ public class User implements Serializable {
     private  String uid ;
     private  String adultName = "";
     private  String familyName = "";
-    private  String childName = "";
-    private  String status = "";
-    private  String registerPark = "";
-    private double lastLng=0.0;
-    private double lastLat=0.0;
     private String adultTitle = "";
+    private String imageUrl;
+    private  String childName = "";
     private String adultGender = "";
     private String childGender = "";
     private String childAge;
     private String about="";
-    private String imageUrl;
+    private  String status = "";
+    private  String registerPark = "";
+    private double lastLng=0.0;
+    private double lastLat=0.0;
 
     public User() {
     }
@@ -44,18 +44,16 @@ public class User implements Serializable {
         return registerPark;
     }
 
-    public User setRegisterPark(String favoritePark) {
+    public void setRegisterPark(String favoritePark) {
         this.registerPark = favoritePark;
-        return this;
     }
 
     public String getChildName() {
         return childName;
     }
 
-    public User setChildName(String childName) {
+    public void setChildName(String childName) {
         this.childName = childName;
-        return this;
     }
 
     public String getStatus() {
@@ -71,54 +69,48 @@ public class User implements Serializable {
         return lastLng;
     }
 
-    public User setLastLng(double lastLng) {
+    public void setLastLng(double lastLng) {
         this.lastLng = lastLng;
-        return this;
     }
 
     public double getLastLat() {
         return lastLat;
     }
 
-    public User setLastLat(double lastLat) {
+    public void setLastLat(double lastLat) {
         this.lastLat = lastLat;
-        return this;
     }
 
     public String getAdultTitle() {
         return adultTitle;
     }
 
-    public User setAdultTitle(String adultTitle) {
+    public void setAdultTitle(String adultTitle) {
         this.adultTitle = adultTitle;
-        return this;
     }
 
     public String getAdultGender() {
         return adultGender;
     }
 
-    public User setAdultGender(String adultGender) {
+    public void setAdultGender(String adultGender) {
         this.adultGender = adultGender;
-        return this;
     }
 
     public String getChildAge() {
         return childAge;
     }
 
-    public User setChildAge(String childAge) {
+    public void setChildAge(String childAge) {
         this.childAge = childAge;
-        return this;
     }
 
     public String getAbout() {
         return about;
     }
 
-    public User setAbout(String about) {
+    public void setAbout(String about) {
         this.about = about;
-        return this;
     }
 
     public String getImageUrl() {
@@ -133,17 +125,15 @@ public class User implements Serializable {
         return familyName;
     }
 
-    public User setFamilyName(String familyName) {
+    public void setFamilyName(String familyName) {
         this.familyName = familyName;
-        return this;
     }
 
     public String getChildGender() {
         return childGender;
     }
 
-    public User setChildGender(String childGender) {
+    public void setChildGender(String childGender) {
         this.childGender = childGender;
-        return this;
     }
 }

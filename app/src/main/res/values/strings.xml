@@ -1,32 +1,30 @@
 <resources>
     <string name="app_name">PlayGo</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
+
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
+
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_maps">MapsActivity</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="family_name">\t Family Name</string>
+    <string name="first_name">\t First Name</string>
+
+    <string name="drawable">drawable</string>
+    <string name="register">ic_register</string>
+    <string name="unregister">ic_register_empty</string>
+
+    <string name="online">online</string>
+    <string name="offline">offline</string>
 
     <string name="park_1_address" translatable="false">Almagor Street 4,Tel Aviv-Yafo</string>
     <string name="park_1_name" translatable="false">Almagor Playground</string>
 
     <string name="park_2_address" translatable="false">Bnei Ephraim ,Tel Aviv-Yafo</string>
     <string name="park_2_name" translatable="false">Bnei Ephraim Playground</string>
-
-
-    <string name="family_name">\t Family Name</string>
-    <string name="first_name">\t First Name</string>
-
-
-    <string name="register">ic_register</string>
-    <string name="unregister">ic_register_empty</string>
 
 
 </resources>

@@ -6,7 +6,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -14,15 +22,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
-import androidx.annotation.NonNull;
-
-import android.util.Log;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,13 +31,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends BaseActivity {
 
@@ -46,48 +40,50 @@ public class MainActivity extends BaseActivity {
     private MapFragment fragment_map;
     private ParksData parksData;
     private User currentUser;
-    private DatabaseReference myRef;
     private double lat;
     private double lng;
-    private TextView map_LBL_park_name;
-    private TextView popup_LBL_online;
     private TextView popup_LBL_rating;
     private TextView popup_LBL_rate_users;
     private TextView popup_LBL_distance;
-    private MaterialButton popup_BTN_goto;
     private Park currentPark;
-    private Park park;
     private Distance distance;
-    private FloatingActionButton saved_park;
-
-    private FloatingActionButton fab;
     int LOCATION_REQUEST_CODE = 1001;
-
     FusedLocationProviderClient fusedLocationProviderClient;
 
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
-
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null)
             startLoginActivity();
-        } else {
-            // TODO: 03/02/2022 del new user 
+        else {
             currentUser = new User();
+            database = FirebaseDatabase.getInstance();
             addAndUpdateUser();
             initMap();
             findView();
-            database = FirebaseDatabase.getInstance();
         }
-
     }
+    // upload parks to map callback
+    private final CallBack_UploadParks callBack_uploadParks = new CallBack_UploadParks() {
+        @Override
+        public void UploadParks(List<Park> parksList) {
+            for (Park park : parksList)
+                fragment_map.addParkMarkers(park.getLat(), park.getLng(), park.getPid());
+        }
+    };
+
+    private final CallBack_showPopUp callBack_showPopUp = new CallBack_showPopUp() {
+        @Override
+        public void PopUpWindowOnMap(String pid) {
+            showPopUpWindowOnMap(pid);
+        }
+    };
 
     private void findView() {
-        fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,22 +92,17 @@ public class MainActivity extends BaseActivity {
                 fragment_map.zoomOnMarker(fragment_map.marker);
             }
         });
-
-        saved_park = findViewById(R.id.saved_park);
+        FloatingActionButton saved_park = findViewById(R.id.saved_park);
         saved_park.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!currentUser.getRegisterPark().equals("")) {
+                if (!currentUser.getRegisterPark().equals(""))
                     updateParkByPid(currentUser.getRegisterPark(), true);
-                } else {
+                else
                     Toast.makeText(MainActivity.this, "You are not registered for playground", Toast.LENGTH_SHORT).show();
-                }
             }
         });
-
-
     }
-
 
     @Override
     protected void onStart() {
@@ -119,9 +110,8 @@ public class MainActivity extends BaseActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getLastLocation();
             readParksAndShowOnMap();
-        } else {
+        } else
             askLocationPermission();
-        }
     }
 
     @Override
@@ -145,12 +135,9 @@ public class MainActivity extends BaseActivity {
 
     private void askLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION))
                 Log.d(TAG, "askLocationPermission: you should show an alert dialog");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
-            }
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         }
     }
 
@@ -164,22 +151,20 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == LOCATION_REQUEST_CODE)
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 getLastLocation();
-            }
-        }
     }
 
+
     private void updateUserDatabase() {
-        myRef = database.getReference("Users").child(currentUser.getUid());
+        DatabaseReference myRef = database.getReference("Users").child(currentUser.getUid());
         myRef.setValue(currentUser);
     }
 
     private void getLastLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             return;
-        }
         Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
         locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
@@ -187,9 +172,8 @@ public class MainActivity extends BaseActivity {
                 if (location != null) {
                     lat = location.getLatitude();
                     lng = location.getLongitude();
-                } else {
+                } else
                     Log.d(TAG, "onFailure: Location was null..");
-                }
             }
         });
         locationTask.addOnFailureListener(new OnFailureListener() {
@@ -198,64 +182,64 @@ public class MainActivity extends BaseActivity {
                 Log.d(TAG, "onFailure: " + e.getLocalizedMessage());
             }
         });
-
     }
 
     //get current location callback
-    private CallBack_Location callBack_location = new CallBack_Location() {
+    private final CallBack_Location callBack_location = new CallBack_Location() {
         @Override
         public void updateLocation() {
             // check if currentUser is not null and the distance is more than 20 meters from the previous location to update lan ,lng
-            if (currentUser.getUid() != null && distance.checkIfDistanceChanged(lat, lng)) {
+            if (currentUser.getUid() != null && distance.checkIfDistanceChanged(lat, lng))
                 updateLocationUser();
-            }
         }
     };
 
     private void addAndUpdateUser() {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Users");
-
         myRef.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
                     addNewUser();
                     return;
                 }
                 currentUser = dataSnapshot.getValue(User.class);
                 baseUser = currentUser;
-                if (callBack_location != null) {
+                if (callBack_location != null)
                     callBack_location.updateLocation();
-                }
             }
+
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
 
     }
 
     //count online users in current park and update popup view
-    private void countOnlineUsers() {
+    private void countOnlineUsers(TextView popup_LBL_online) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Users");
         myRef.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int numOfOnlineUsers = 0;
                 for (DataSnapshot key : dataSnapshot.getChildren()) {
                     try {
                         User user = key.getValue(User.class);
-                        if (currentPark.getUsersUidList().contains(user.getUid()) && user.getStatus().equals("online")) {
+                        assert user != null;
+                        if (currentPark.getUsersUidList().contains(user.getUid()) && user.getStatus().equals(getString(R.string.online))) {
                             numOfOnlineUsers++;
                         }
-                    } catch (Exception ex) {
+                    } catch (Exception ignored) {
                     }
                 }
                 popup_LBL_online.setText("" + numOfOnlineUsers);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
@@ -270,28 +254,23 @@ public class MainActivity extends BaseActivity {
     }
 
     private void updatePopUpView(String pid, View popUpView) {
-        map_LBL_park_name = popUpView.findViewById(R.id.map_LBL_park_name);
-        popup_LBL_online = popUpView.findViewById(R.id.popup_LBL_online);
+        TextView map_LBL_park_name = popUpView.findViewById(R.id.map_LBL_park_name);
+        TextView popup_LBL_online = popUpView.findViewById(R.id.popup_LBL_online);
         popup_LBL_rating = popUpView.findViewById(R.id.popup_LBL_rating);
         popup_LBL_rate_users = popUpView.findViewById(R.id.popup_LBL_rate_users);
         popup_LBL_distance = popUpView.findViewById(R.id.popup_LBL_distance);
-        popup_BTN_goto = popUpView.findViewById(R.id.popup_BTN_goto);
-
-
-        //look for current park
-        //init view items
+        //search the current park
         for (Park park : parksData.getParksList()) {
-            if (park.getPid() == pid) {
+            if (park.getPid().equals(pid)) {
                 currentPark = park;
                 setDistanceFromCurrLocation();
                 updateParkByPid(currentPark.getPid(), false);
                 map_LBL_park_name.setText(currentPark.getName());
-                countOnlineUsers();
+                countOnlineUsers(popup_LBL_online);
             }
         }
-
-
         //go to button on the popup
+        MaterialButton popup_BTN_goto = popUpView.findViewById(R.id.popup_BTN_goto);
         popup_BTN_goto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -299,61 +278,56 @@ public class MainActivity extends BaseActivity {
                 updateParkByPid(currentPark.getPid(), true);
             }
         });
-
-
     }
 
+    @SuppressLint("SetTextI18n")
     private void setDistanceFromCurrLocation() {
         if (currentPark.getLat() != 0.0 && currentPark.getLng() != 0.0) {
-            int dist = distance.calcDistance(currentPark.getLat(), currentPark.getLng());
-            popup_LBL_distance.setText("" + dist + "m");
+            int current_distance = distance.calcDistance(currentPark.getLat(), currentPark.getLng());
+            popup_LBL_distance.setText("" + current_distance + "m");
         }
     }
-
 
     private void updateParkByPid(String pid, boolean openParkActivity) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Parks");
-
         myRef.child(pid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                park = dataSnapshot.getValue(Park.class);
-
-                if (openParkActivity) {
-                    currentPark = park;
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                currentPark = dataSnapshot.getValue(Park.class);
+                if (openParkActivity)
                     openParkActivity();
-                } else {
-                    getRatingByPid(park.getPid());
+                else {
+                    assert currentPark != null;
+                    getRatingByPid(currentPark.getPid());
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
     }
 
     private void getRatingByPid(String pid) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Rating");
-
         myRef.child(pid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Rating rating = dataSnapshot.getValue(Rating.class);
+                    assert rating != null;
                     popup_LBL_rate_users.setText("" + rating.getTotNumOfRates());
                     popup_LBL_rating.setText("" + rating.getTotRating());
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
     }
 
 
@@ -367,8 +341,8 @@ public class MainActivity extends BaseActivity {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         User user = new User()
                 .setUid(firebaseAuth.getUid())
-                .setAdultName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName())
-                .setStatus("offline");
+                .setAdultName(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName())
+                .setStatus(getString(R.string.online));
         baseUser = user;
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Users");
@@ -392,7 +366,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         switch (id) {
             case R.id.my_profile:
                 Toast.makeText(this, "My Profile", Toast.LENGTH_SHORT).show();
@@ -417,8 +390,6 @@ public class MainActivity extends BaseActivity {
                             }
                         });
                 return true;
-
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -428,26 +399,8 @@ public class MainActivity extends BaseActivity {
         startActivity(myIntent);
     }
 
-    // upload parks to map callback
-    private CallBack_UploadParks callBack_uploadParks = new CallBack_UploadParks() {
-        @Override
-        public void UploadParks(List<Park> parksList) {
-            for (Park park : parksList) {
-                fragment_map.addParkMarkers(park.getLat(), park.getLng(), park.getPid());
-            }
-        }
-    };
-
-    private CallBack_showPopUp callBack_showPopUp = new CallBack_showPopUp() {
-        @Override
-        public void PopUpWindowOnMap(String pid) {
-            showPopUpWindowOnMap(pid);
-        }
-    };
-
     private void readParksAndShowOnMap() {
         parksData = new ParksData(this);
-//        parksData = new ParksData();
         parksData.getParks();
         parksData.setCallBack_UploadParks(callBack_uploadParks);
     }

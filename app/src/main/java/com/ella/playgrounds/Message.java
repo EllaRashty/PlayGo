@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-
 public class Message {
     private String message;
     private String name;
@@ -24,6 +23,7 @@ public class Message {
         this.name = name;
         this.uid = uid;
     }
+
     public Message(String message, User user) {
         this.message = message;
         this.user = user;

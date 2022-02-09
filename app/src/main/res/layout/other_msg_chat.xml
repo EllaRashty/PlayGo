@@ -16,7 +16,7 @@
 
 
         <TextView
-            android:id="@+id/other_LBL_name"
+            android:id="@+id/other_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="John"
@@ -24,7 +24,7 @@
     </RelativeLayout>
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/other_IMV_img"
+        android:id="@+id/other_img"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignBottom="@+id/other_CV_view"
@@ -42,7 +42,7 @@
         android:layout_below="@id/other_LL_view"
         android:layout_marginLeft="5dp"
         android:layout_marginBottom="20dp"
-        android:layout_toRightOf="@+id/other_IMV_img"
+        android:layout_toRightOf="@+id/other_img"
         app:cardBackgroundColor="@color/light"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp"
@@ -57,7 +57,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/other_LBL_massage"
+                android:id="@+id/other_massages_TV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -73,7 +73,7 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/other_LBL_time"
+        android:id="@+id/other_sendTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/other_CV_view"

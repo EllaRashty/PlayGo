@@ -19,42 +19,33 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        MyScreenUtils.hideSystemUI2(this);
-
-        //get current user to reset the location when turn off the app
         baseUser = new User();
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-//            MyScreenUtils.hideSystemUI2(this);
-        }
     }
 
 
-    @Override
-    public void onBackPressed() {
-        if (isDoublePressToClose) {
-            if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-
-                //reset the location when turn off the app
-                if (baseUser != null) {
-                    baseUser.setStatus("offline");
-                    baseUser.setLastLat(0);
-                    baseUser.setLastLng(0);
-                    updateUserDatabase();
-                }
-                super.onBackPressed();
-            } else {
-                Toast.makeText(this, "Tap back button again to exit", Toast.LENGTH_SHORT).show();
-            }
-            mBackPressed = System.currentTimeMillis();
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (isDoublePressToClose) {
+//            if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+//                //reset the location when turn off the app
+//                if (baseUser != null) {
+//                    baseUser.setStatus("offline");
+//                    baseUser.setLastLat(0);
+//                    baseUser.setLastLng(0);
+//                    updateUserDatabase();
+//                }
+//                super.onBackPressed();
+//            } else
+//                Toast.makeText(this, "Tap back button again to exit", Toast.LENGTH_SHORT).show();
+//            mBackPressed = System.currentTimeMillis();
+//        } else
+//            super.onBackPressed();
+//    }
 
 
     private void updateUserDatabase() {

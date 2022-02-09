@@ -15,17 +15,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -76,7 +72,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
     }
 
     private void findView() {
-        main_IMG_background = findViewById(R.id.main_IMG_background);
+        main_IMG_background = findViewById(R.id.chat_background);
         Glide
                 .with(this)
                 .load("https://images.unsplash.com/photo-1566806924653-730bc02389ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGxheWdyb3VuZHxlbnwwfHwwfHw%3D&w=1000&q=80")

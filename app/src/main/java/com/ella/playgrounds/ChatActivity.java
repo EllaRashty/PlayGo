@@ -7,15 +7,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
 import com.bumptech.glide.Glide;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,67 +29,44 @@ public class ChatActivity extends BaseActivity {
 
     public static final String PARK_PID = "PARK_PID";
     private String park_pid = "";
-
-    private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase database;
     private DatabaseReference myRef;
-    private MassageAdapter massageAdapter;
     private User user;
     private Park currentPark;
     private List<Message> messageList;
-
-    private RecyclerView chat_RCV_recyclerview;
-    private TextInputLayout chat_EDT_massage;
-    private TextView chat_LBL_park_name;
-    private ImageButton chat_BTN_send;
-    private ImageButton chat_BTN_back;
-    private ImageView main_IMG_background;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_activity);
         Objects.requireNonNull(getSupportActionBar()).hide();
-        isDoublePressToClose = true;
-
-        //get park pid
-        park_pid = (String) getIntent().getStringExtra(PARK_PID);
-
-
-        findViews();
         init();
         getCurrentUser();
         getParkByPid(park_pid);
     }
 
     private void manageMessage() {
-
         myRef = database.getReference("Massages").child(park_pid);
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message massage = snapshot.getValue(Message.class);
+                assert massage != null;
                 massage.setKey(snapshot.getKey());
-
                 messageList.add(massage);
                 displayMassages(messageList);
-
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message massage = snapshot.getValue(Message.class);
+                assert massage != null;
                 massage.setKey(snapshot.getKey());
-
                 List<Message> newMessages = new ArrayList<>();
-
                 for (Message m : messageList) {
-                    if (m.getKey().equals(massage.getKey())) {
+                    if (m.getKey().equals(massage.getKey()))
                         newMessages.add(massage);
-                    } else {
+                    else
                         newMessages.add(m);
-                    }
                 }
                 messageList = newMessages;
                 displayMassages(messageList);
@@ -103,40 +75,33 @@ public class ChatActivity extends BaseActivity {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Message massage = snapshot.getValue(Message.class);
+                assert massage != null;
                 massage.setKey(snapshot.getKey());
-
                 List<Message> newMessages = new ArrayList<>();
-
                 for (Message m : messageList) {
-                    if (!m.getKey().equals(massage.getKey())) {
+                    if (!m.getKey().equals(massage.getKey()))
                         newMessages.add(m);
-                    }
-
                 }
-
                 messageList = newMessages;
                 displayMassages(messageList);
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-
     }
 
     private void getCurrentUser() {
-
         //get current user from firebase
-        final FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        assert currentUser != null;
         user.setUid(currentUser.getUid());
-
         database.getReference("Users").child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -148,38 +113,45 @@ public class ChatActivity extends BaseActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
 
     private void readMessageFromInput() {
-        chat_BTN_send.setOnClickListener(new View.OnClickListener() {
+        ImageButton send_BTN = findViewById(R.id.send_BTN);
+        TextInputLayout chat_edit_massage = findViewById(R.id.chat_edit_massage);
+        send_BTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(chat_EDT_massage.getEditText().getText().toString())) {
-                    Message massage = new Message(chat_EDT_massage.getEditText().getText().toString(), user);
-                    chat_EDT_massage.getEditText().setText("");
+                if (!TextUtils.isEmpty(Objects.requireNonNull(chat_edit_massage.getEditText()).getText().toString())) {
+                    Message massage = new Message(chat_edit_massage.getEditText().getText().toString(), user);
+                    chat_edit_massage.getEditText().setText("");
                     myRef.push().setValue(massage);
-
-                } else {
-                    Toast.makeText(ChatActivity.this, "you cannot send blank massage", Toast.LENGTH_SHORT).show();
-
-                }
+                } else
+                    Toast.makeText(ChatActivity.this, "You cannot send empty massage", Toast.LENGTH_SHORT).show();
             }
-
-
         });
     }
 
     private void init() {
-        firebaseAuth = FirebaseAuth.getInstance();
+        park_pid = (String) getIntent().getStringExtra(PARK_PID); //get park pid
         database = FirebaseDatabase.getInstance();
         user = new User();
         messageList = new ArrayList<>();
+        isDoublePressToClose = true;
+        findViews();
+    }
+
+    private void findViews() {
+        ImageView chat_background = findViewById(R.id.chat_background);
+        Glide
+                .with(this)
+                .load("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/kids-swinging-on-swing-set-royalty-free-image-1616099921.?crop=0.668xw:1.00xh;0.167xw,0&resize=640:*")
+                .into(chat_background);
 
         //back button
-        chat_BTN_back.setOnClickListener(new View.OnClickListener() {
+        ImageButton chat_back_BTN = findViewById(R.id.chat_back_BTN);
+        chat_back_BTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -187,25 +159,11 @@ public class ChatActivity extends BaseActivity {
         });
     }
 
-    private void findViews() {
-        chat_RCV_recyclerview = findViewById(R.id.chat_RCV_recyclerview);
-        chat_EDT_massage = findViewById(R.id.chat_EDT_massage);
-        chat_BTN_send = findViewById(R.id.chat_BTN_send);
-        chat_BTN_back = findViewById(R.id.chat_BTN_back);
-        chat_LBL_park_name = findViewById(R.id.chat_LBL_park_name);
-        main_IMG_background = findViewById(R.id.main_IMG_background);
-        Glide
-                .with(this)
-                .load("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/kids-swinging-on-swing-set-royalty-free-image-1616099921.?crop=0.668xw:1.00xh;0.167xw,0&resize=640:*")
-                .into(main_IMG_background);
-    }
-
 
     @Override
     protected void onResume() {
         super.onResume();
         messageList = new ArrayList<>();
-
     }
 
     private void getParkByPid(String pid) {
@@ -213,25 +171,24 @@ public class ChatActivity extends BaseActivity {
         DatabaseReference myRef = database.getReference("Parks");
         myRef.child(pid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 currentPark = dataSnapshot.getValue(Park.class);
+                TextView chat_LBL_park_name = findViewById(R.id.chat_LBL_park_name);
                 chat_LBL_park_name.setText(currentPark.getName());
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
     }
 
     private void displayMassages(List<Message> massageList) {
-        chat_RCV_recyclerview.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
-        massageAdapter = new MassageAdapter(ChatActivity.this, massageList, myRef, user.getUid());
-        chat_RCV_recyclerview.setAdapter(massageAdapter);
+        RecyclerView chat_RV = findViewById(R.id.chat_RV);
+        chat_RV.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+        MassageAdapter massageAdapter = new MassageAdapter(ChatActivity.this, massageList, user.getUid());
+        chat_RV.setAdapter(massageAdapter);
         //Recyclerview start from Bottom
-        chat_RCV_recyclerview.scrollToPosition(massageAdapter.getItemCount() - 1);
-
+        chat_RV.scrollToPosition(massageAdapter.getItemCount() - 1);
     }
-
-
 }

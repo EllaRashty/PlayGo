@@ -6,27 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
-
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
-    private final String ONLINE = "online";
-    private final String OFFLINE = "offline";
-    private final String IMG_ONLINE = "presence_offline";
-    private final String IMG_OFFLINE = "presence_offline";
-
-    private List<User> mData;
-    private LayoutInflater mInflater;
+    private final List<User> mData;
+    private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private final Context context;
     private User user;
-    private Context context;
-
 
     // data is passed into the constructor
     public UserAdapter(Context context, List<User> data) {
@@ -46,25 +37,21 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-         user = mData.get(position);
-
-        //todo set img
-        holder.list_LBL_name.setText(user.getAdultName());
-
-        if (user.getStatus().equals(ONLINE)) {
-            holder.list_IMG_status.setImageResource(android.R.drawable.presence_online);
-        } else if(user.getStatus().equals(OFFLINE)){
-            holder.list_IMG_status.setImageResource(android.R.drawable.presence_offline);
-        }
+        user = mData.get(position);
+        holder.user_name.setText(user.getAdultName());
+        if (user.getStatus().equals(context.getString(R.string.online)))
+            holder.user_status.setImageResource(android.R.drawable.presence_online);
+        else if (user.getStatus().equals(context.getString(R.string.offline)))
+            holder.user_status.setImageResource(android.R.drawable.presence_busy);
         showUserImage(holder);
     }
 
     private void showUserImage(ViewHolder holder) {
-            if(user.getImageUrl() != null){
-                Glide.with(context)
-                        .load(user.getImageUrl())
-                        .into(holder.list_IMG_user);
-            }
+        if (user.getImageUrl() != null) {
+            Glide.with(context)
+                    .load(user.getImageUrl())
+                    .into(holder.user_IMG);
+        }
     }
 
     // total number of rows
@@ -91,27 +78,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     //Holds variables in a View
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView list_IMG_status;
-        TextView list_LBL_name;
-        ShapeableImageView list_IMG_user;
-        //RelativeLayout list_RL_profile;
+        ImageView user_status;
+        TextView user_name;
+        ShapeableImageView user_IMG;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            list_IMG_status = itemView.findViewById(R.id.list_IMG_status);
-            list_LBL_name = itemView.findViewById(R.id.list_LBL_name);
-            list_IMG_user = itemView.findViewById(R.id.list_IMG_user);
-
+            user_status = itemView.findViewById(R.id.user_status);
+            user_name = itemView.findViewById(R.id.user_name_LBL);
+            user_IMG = itemView.findViewById(R.id.user_IMG);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mClickListener != null) {
+                    if (mClickListener != null)
                         mClickListener.onItemClick(v, getAdapterPosition());
-                    }
                 }
             });
-
         }
     }
 

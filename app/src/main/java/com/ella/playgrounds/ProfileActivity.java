@@ -1,38 +1,15 @@
 package com.ella.playgrounds;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.Objects;
 
 public class ProfileActivity extends BaseActivity {
-    private static String USER_PROFILE = "USER_PROFILE";
     private User user;
-    private Park newActivityPark;
-    private ShapeableImageView profile_IMG_user;
-
-    private TextView user_name;
-    private TextView family_name;
-    private TextView title;
-    private TextView gender;
-    private TextView child_name;
-    private TextView age;
-    private TextView child_gender;
-    private TextView about;
-    private ImageButton back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,25 +17,41 @@ public class ProfileActivity extends BaseActivity {
         setContentView(R.layout.activity_profile);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        //get user
-        user = (User) getIntent().getSerializableExtra(USER_PROFILE);
-        baseUser = user;
+        String USER_PROFILE = "USER_PROFILE";
+        user = (User) getIntent().getSerializableExtra(USER_PROFILE); //get user
         findView();
-        init_views();
-
     }
 
-    private void init_views() {
+    private void display_text() {
+        TextView user_name = findViewById(R.id.user_name);
         user_name.setText(user.getAdultName());
-        family_name.setText(user.getFamilyName());
-        title.setText(user.getAdultTitle());
-        gender.setText(user.getAdultGender());
-        child_name.setText(user.getChildName());
-        age.setText(user.getChildAge());
-        child_gender.setText(user.getChildGender());
-        about.setText(user.getAbout());
 
-        back = findViewById(R.id.back_to_main);
+        TextView family_name = findViewById(R.id.family_name);
+        family_name.setText(user.getFamilyName());
+
+        TextView title = findViewById(R.id.title);
+        title.setText(user.getAdultTitle());
+
+        TextView gender = findViewById(R.id.gender);
+        gender.setText(user.getAdultGender());
+
+        TextView child_name = findViewById(R.id.child_name);
+        child_name.setText(user.getChildName());
+
+        TextView age = findViewById(R.id.age);
+        age.setText(user.getChildAge());
+
+        TextView child_gender = findViewById(R.id.child_gender);
+        child_gender.setText(user.getChildGender());
+
+        TextView about = findViewById(R.id.about);
+        about.setText(user.getAbout());
+    }
+
+    private void findView() {
+        showImage();
+        display_text();
+        ImageButton back = findViewById(R.id.back_to_main);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,27 +60,12 @@ public class ProfileActivity extends BaseActivity {
         });
     }
 
-    private void findView() {
-        user_name = findViewById(R.id.user_name);
-        family_name = findViewById(R.id.family_name);
-        title = findViewById(R.id.title);
-        gender = findViewById(R.id.gender);
-        child_name = findViewById(R.id.child_name);
-        age = findViewById(R.id.age);
-        child_gender = findViewById(R.id.child_gender);
-        about = findViewById(R.id.about);
-        profile_IMG_user = findViewById(R.id.profile_IMG_user);
-        showImage();
-
-    }
-
     private void showImage() {
+        ShapeableImageView profile_IMG_user = findViewById(R.id.profile_IMG_user);
         if (user.getImageUrl() != null) {
-            Glide.with(this /* context */)
+            Glide.with(this)
                     .load(user.getImageUrl())
                     .into(profile_IMG_user);
         }
     }
-
-
 }

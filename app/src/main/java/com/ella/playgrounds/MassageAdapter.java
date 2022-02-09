@@ -1,6 +1,5 @@
 package com.ella.playgrounds;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
 
@@ -21,45 +19,36 @@ public class MassageAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 
-    private Context context;
-    private List<Message> massageList;
-    private DatabaseReference database;
-    private String currentUid;
+    private final Context context;
+    private final List<Message> massageList;
+    private final String currentUid;
 
-
-    public MassageAdapter(Context context, List<Message> massageList, DatabaseReference databaseReference, String currentUid) {
+    public MassageAdapter(Context context, List<Message> massageList, String currentUid) {
         this.context = context;
         this.massageList = massageList;
-        this.database = database;
         this.currentUid = currentUid;
-
     }
-
 
     @Override
     public int getItemViewType(int position) {
         Message massage = massageList.get(position);
-
-        if (massage.getUser().getUid().equals(currentUid)) {
+        if (massage.getUser().getUid().equals(currentUid))
             // If the current user is the sender of the message
             return VIEW_TYPE_MESSAGE_SENT;
-        } else {
+        else
             // If some other user sent the message
             return VIEW_TYPE_MESSAGE_RECEIVED;
-        }
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         if (viewType == VIEW_TYPE_MESSAGE_SENT) {
             View view = LayoutInflater.from(context).inflate(R.layout.my_msg_chat, parent, false);
             return new SentMessageHolder(view);
         } else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED) {
             View view = LayoutInflater.from(context).inflate(R.layout.other_msg_chat, parent, false);
             return new ReceivedMessageHolder(view);
-
         }
         return null;
     }
@@ -67,14 +56,10 @@ public class MassageAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Message massage = massageList.get(position);
-
-        if (holder.getItemViewType() == VIEW_TYPE_MESSAGE_SENT) {
+        if (holder.getItemViewType() == VIEW_TYPE_MESSAGE_SENT)
             ((SentMessageHolder) holder).bind(massage);
-
-        } else if (holder.getItemViewType() == VIEW_TYPE_MESSAGE_RECEIVED) {
-
+        else if (holder.getItemViewType() == VIEW_TYPE_MESSAGE_RECEIVED)
             ((ReceivedMessageHolder) holder).bind(massage);
-        }
     }
 
     @Override
@@ -82,54 +67,43 @@ public class MassageAdapter extends RecyclerView.Adapter {
         return massageList.size();
     }
 
-
-    private class SentMessageHolder extends RecyclerView.ViewHolder {
-        TextView me_LBL_massage, me_LBL_time;
+    private static class SentMessageHolder extends RecyclerView.ViewHolder {
+        TextView my_massage, my_sendTime;
 
         SentMessageHolder(View itemView) {
             super(itemView);
-
-            me_LBL_massage = (TextView) itemView.findViewById(R.id.me_LBL_massage);
-            me_LBL_time = (TextView) itemView.findViewById(R.id.me_LBL_time);
+            my_massage = (TextView) itemView.findViewById(R.id.my_massage);
+            my_sendTime = (TextView) itemView.findViewById(R.id.me_LBL_time);
         }
 
         void bind(Message message) {
-            me_LBL_massage.setText(message.getMessage());
-            me_LBL_time.setText(message.getTime());
+            my_massage.setText(message.getMessage());
+            my_sendTime.setText(message.getTime());
         }
     }
 
 
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
-        TextView other_LBL_massage;
-        TextView other_LBL_time;
-        TextView other_LBL_name;
-        ImageView other_IMV_img;
+        TextView other_massage, other_sendTime, other_name;
+        ImageView other_img;
 
         ReceivedMessageHolder(View itemView) {
             super(itemView);
-
-            other_LBL_massage = (TextView) itemView.findViewById(R.id.other_LBL_massage);
-            other_LBL_time = (TextView) itemView.findViewById(R.id.other_LBL_time);
-            other_LBL_name = (TextView) itemView.findViewById(R.id.other_LBL_name);
-            other_IMV_img = (ImageView) itemView.findViewById(R.id.other_IMV_img);
+            other_massage = (TextView) itemView.findViewById(R.id.other_massages_TV);
+            other_sendTime = (TextView) itemView.findViewById(R.id.other_sendTime);
+            other_name = (TextView) itemView.findViewById(R.id.other_name);
+            other_img = (ImageView) itemView.findViewById(R.id.other_img);
         }
 
         void bind(Message message) {
-            other_LBL_massage.setText(message.getMessage());
-            if(message.getUser().getImageUrl() != null){
+            other_massage.setText(message.getMessage());
+            if (message.getUser().getImageUrl() != null) {
                 Glide.with(context)
                         .load(message.getUser().getImageUrl())
-                        .into(other_IMV_img);
+                        .into(other_img);
             }
-
-            other_LBL_time.setText(message.getTime());
-            other_LBL_name.setText(message.getUser().getAdultName());
-
+            other_sendTime.setText(message.getTime());
+            other_name.setText(message.getUser().getAdultName());
         }
-
-
     }
-
-
 }
